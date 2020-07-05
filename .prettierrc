@@ -1,0 +1,9 @@
+{
+  "printWidth": 150,
+  "tabWidth": 2,
+  "parser": "typescript",
+  "semi": false,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "trailingComma": "es5"
+}
