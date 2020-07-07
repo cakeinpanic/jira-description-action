@@ -1,7 +1,7 @@
-import { JIRALintActionInputs } from './types'
+import { IActionInputs } from './types'
 import * as core from '@actions/core'
 
-export const getInputs = (): JIRALintActionInputs => {
+export const getInputs = (): IActionInputs => {
   const JIRA_TOKEN: string = core.getInput('jira-token', { required: true })
   const JIRA_BASE_URL: string = core.getInput('jira-base-url', { required: true })
   const GITHUB_TOKEN: string = core.getInput('github-token', { required: true })

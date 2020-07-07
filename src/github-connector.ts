@@ -2,16 +2,15 @@ import { getInputs } from './action-inputs'
 import { IGithubData, JIRADetails, PullRequestParams } from './types'
 import { PullsUpdateParams } from '@octokit/rest'
 import { buildPRDescription, getJIRAIssueKey, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils'
-import * as github from '@actions/github'
+import { context, GitHub } from '@actions/github/lib/github'
 
 export class GithubConnector {
-  client: github.GitHub
-  githubData: IGithubData
+  client: GitHub = {} as GitHub
+  githubData: IGithubData = {} as IGithubData
 
   constructor() {
     const { GITHUB_TOKEN } = getInputs()
-
-    this.client = new github.GitHub(GITHUB_TOKEN)
+    this.client = new GitHub(GITHUB_TOKEN)
     this.githubData = this.getGithubData()
   }
 
@@ -70,7 +69,7 @@ export class GithubConnector {
         organization: { login: owner },
         pull_request: pullRequest,
       },
-    } = github.context
+    } = context
 
     return {
       eventName,
