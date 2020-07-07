@@ -2,7 +2,7 @@
   "printWidth": 150,
   "tabWidth": 2,
   "parser": "typescript",
-  "semi": false,
+  "semi": true,
   "singleQuote": true,
   "bracketSpacing": true,
   "trailingComma": "es5"

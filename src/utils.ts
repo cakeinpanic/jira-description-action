@@ -5,62 +5,62 @@ import {
   HIDDEN_MARKER_START,
   JIRA_REGEX_MATCHER,
   WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS,
-} from './constants'
-import { JIRADetails } from './types'
+} from './constants';
+import { JIRADetails } from './types';
 
 export const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
-  const matches = input.toUpperCase().match(regexp)
-  const keys = matches?.length ? matches : [null]
-  return keys[0]
-}
+  const matches = input.toUpperCase().match(regexp);
+  const keys = matches?.length ? matches : [null];
+  return keys[0];
+};
 
 export const getJIRAIssueKeysByCustomRegexp = (input: string, numberRegexp: string, projectKey: string): string | null => {
-  const customRegexp = new RegExp(numberRegexp, 'g')
-  const ticketNumber = getJIRAIssueKey(input, customRegexp)
-  return ticketNumber ? `${projectKey}-${ticketNumber}` : null
-}
+  const customRegexp = new RegExp(numberRegexp, 'g');
+  const ticketNumber = getJIRAIssueKey(input, customRegexp);
+  return ticketNumber ? `${projectKey}-${ticketNumber}` : null;
+};
 
 export const shouldSkipBranch = (branch: string, additionalIgnorePattern?: string): boolean => {
   if (BOT_BRANCH_PATTERNS.some((pattern) => pattern.test(branch))) {
-    console.log(`You look like a bot 🤖 so we're letting you off the hook!`)
-    return true
+    console.log(`You look like a bot 🤖 so we're letting you off the hook!`);
+    return true;
   }
 
   if (DEFAULT_BRANCH_PATTERNS.some((pattern) => pattern.test(branch))) {
-    console.log(`Ignoring check for default branch ${branch}`)
-    return true
+    console.log(`Ignoring check for default branch ${branch}`);
+    return true;
   }
 
-  const ignorePattern = new RegExp(additionalIgnorePattern || '')
+  const ignorePattern = new RegExp(additionalIgnorePattern || '');
   if (!!additionalIgnorePattern && ignorePattern.test(branch)) {
-    console.log(`branch '${branch}' ignored as it matches the ignore pattern '${additionalIgnorePattern}' provided in skip-branches`)
-    return true
+    console.log(`branch '${branch}' ignored as it matches the ignore pattern '${additionalIgnorePattern}' provided in skip-branches`);
+    return true;
   }
 
-  console.log(`branch '${branch}' does not match ignore pattern provided in 'skip-branches' option:`, ignorePattern)
-  return false
-}
+  console.log(`branch '${branch}' does not match ignore pattern provided in 'skip-branches' option:`, ignorePattern);
+  return false;
+};
 
 const escapeRegexp = (str: string): string => {
-  return str.replace(/[\\^$.|?*+(<>)[{]/g, '\\$&')
-}
+  return str.replace(/[\\^$.|?*+(<>)[{]/g, '\\$&');
+};
 
 export const getPRDescription = (oldBody: string, details: string): string => {
-  const hiddenMarkerStartRg = escapeRegexp(HIDDEN_MARKER_START)
-  const hiddenMarkerEndRg = escapeRegexp(HIDDEN_MARKER_END)
+  const hiddenMarkerStartRg = escapeRegexp(HIDDEN_MARKER_START);
+  const hiddenMarkerEndRg = escapeRegexp(HIDDEN_MARKER_END);
 
-  const rg = new RegExp(`${hiddenMarkerStartRg}([\\s\\S]+)${hiddenMarkerEndRg}`, 'igm')
-  const bodyWithoutJiraDetails = oldBody.replace(rg, '')
+  const rg = new RegExp(`${hiddenMarkerStartRg}([\\s\\S]+)${hiddenMarkerEndRg}`, 'igm');
+  const bodyWithoutJiraDetails = oldBody.replace(rg, '');
 
   return `${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${HIDDEN_MARKER_START}
 ${details}
 ${HIDDEN_MARKER_END}
-${bodyWithoutJiraDetails}`
-}
+${bodyWithoutJiraDetails}`;
+};
 
 export const buildPRDescription = (details: JIRADetails) => {
-  const displayKey = details.key.toUpperCase()
+  const displayKey = details.key.toUpperCase();
   return `
 <table>
 <td>
@@ -68,5 +68,5 @@ export const buildPRDescription = (details: JIRADetails) => {
   </td></table>
   <br />
  
-`
-}
+`;
+};
