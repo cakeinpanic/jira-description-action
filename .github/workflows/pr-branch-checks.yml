@@ -1,6 +1,10 @@
 name: "test -> build -> update lib if needed"
 on:
   push:
+    branches:
+      - '**'
+    tags:
+      - '!**'
 jobs:
   build-test:
     runs-on: ubuntu-16.04
@@ -37,3 +41,4 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
          github_token: ${{ secrets.GITHUB_TOKEN }}
+         branch: ${{ github.ref }}
