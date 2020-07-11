@@ -6,7 +6,7 @@ inputs:
     description: 'Token used to update PR description and add labels. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
   jira-token:
-    description: 'API Token used to access the JIRA REST API. Must have read access to your JIRA Projects & Issues.'
+    description: 'API Token used to access the JIRA REST API. Must have read access to your JIRA Projects & Issues. Format: <jira username>:<jira token>'
     required: true
   jira-base-url:
     description: 'The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net"'
