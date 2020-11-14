@@ -48,7 +48,7 @@ export class GithubConnector {
   async updatePrDetails(details: JIRADetails) {
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
-
+    console.log(details);
     const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
 
     const prData: PullsUpdateParams = {
@@ -65,12 +65,9 @@ export class GithubConnector {
     console.log(context);
     const {
       eventName,
-      payload: {
-        repository,
-        organization: { login: owner },
-        pull_request: pullRequest,
-      },
+      payload: { repository, organization, sender, pull_request: pullRequest },
     } = context;
+    const owner = organization ? organization?.login : sender?.login;
 
     return {
       eventName,
