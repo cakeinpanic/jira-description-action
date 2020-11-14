@@ -64,16 +64,25 @@ Note: The user should have the [required permissions (mentioned under GET Issue)
 By default issue key is searched in PR title(which can easily be changed). `use-branch-name` option can be set to true if you want to get issue key from branch name 
 
 ### Using custom regex
-If `custom-issue-number-regexp` and `jira-project-key` both are not provided, full key of issue is searched using regexp `/([a-zA-Z0-9]{1,10})-(\d+)/g;`.
+If `custom-issue-number-regexp` is not provided, full key of issue is searched using regexp `/([a-zA-Z0-9]{1,10}-\d+)/g;`.
 For example
 ```
 bugfix/prj-15-click -> PRJ-15
 prj-15-bugfix-17 -> PRJ-17
 15-bugfix -> nothing found
 ``` 
-check for more [in tests](__tests__/utils.test.ts#106)
+Custom regexp would work like that(check for more [in tests](__tests__/utils.test.ts#106)):
+```
+custom-issue-number-regexp: 'MYPROJ-\d+' 
+```
+```
+bugfix/MYPROJ-15-click -> MYPROJ-15
+prj-15-myproj-17 -> MYPROJ-15 // it is insensitive by design
+15-bugfix -> null
+```
 
-If you don't use full keys in branch names, you can specify optional parameters to compute issue keys:
+If you don't use full keys in branch names, you can specify optional parameters to compute issue keys. 
+It would be appended to found key as `${jira-project-key}-{regexp-match}`:
 ```
 jira-project-key: 'MYPROJ'
 custom-issue-number-regexp: '\d+' 
@@ -82,4 +91,13 @@ custom-issue-number-regexp: '\d+'
 bugfix/prj-15-click -> MYPROJ-15
 prj-15-bugfix-17 -> MYPROJ-15
 15-bugfix -> MYPROJ-15
+```
+Groups in regexp can also be used(last group in a match would be taken):
+```
+jira-project-key: 'MYPROJ'
+custom-issue-number-regexp: '-(\d+)' 
+```
+```
+bugfix/prj15-239-click -> MYPROJ-239
+15-bugfix -> null
 ```
