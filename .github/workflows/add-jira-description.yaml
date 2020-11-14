@@ -16,7 +16,7 @@ jobs:
           skip-branches: '^(production-.+|master)$'
           use-branch-name: false
           jira-project-key: 'LAW'
-          custom-issue-number-regexp: '-(TEST\-\d+)'
+          custom-issue-number-regexp: '\\-(TEST\\-\\d+)'
 
 
 
