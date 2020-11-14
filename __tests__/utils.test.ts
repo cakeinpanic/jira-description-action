@@ -40,15 +40,21 @@ describe('getJIRAIssueKeys()', () => {
 });
 
 describe('getJIRAIssueKeysByCustomRegexp() gets jira keys from different strings', () => {
-  it.only('with project name', () => {
+  it('with project name', () => {
     expect(getJIRAIssueKeysByCustomRegexp('18,345', '\\d+', 'PRJ')).toEqual('PRJ-18');
     expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', '^\\d+', 'QQ')).toEqual(null);
     expect(getJIRAIssueKeysByCustomRegexp('43-login-protocol', '^\\d+', 'QQ')).toEqual('QQ-43');
   });
 
-  it.only('without project name', () => {
+  it('without project name', () => {
     expect(getJIRAIssueKeysByCustomRegexp('18,345', '\\d+')).toEqual('18');
     expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', 'es\\-\\d+')).toEqual('es-43');
+  });
+
+  it.only('with remembered value in regexp', () => {
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', '(es\\-\\d+)$')).toEqual('es-43');
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-20-in-14', '-(IN\\-\\d+)')).toEqual('in-14');
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-20-in-14', 'in\\-(\\d+)', 'PRJ')).toEqual('PRJ-20');
   });
 });
 

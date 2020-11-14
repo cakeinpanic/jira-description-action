@@ -9,10 +9,12 @@ import {
 import { JIRADetails } from './types';
 
 export const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
-  const matches = input.match(regexp);
-  const keys = matches?.length ? matches : [null];
-  console.log(matches);
-  return keys[0];
+  const matches = regexp.exec(input);
+  if (!matches) {
+    return null;
+  }
+
+  return matches[matches.length - 1];
 };
 
 export const getJIRAIssueKeysByCustomRegexp = (input: string, numberRegexp: string, projectKey?: string): string | null => {
