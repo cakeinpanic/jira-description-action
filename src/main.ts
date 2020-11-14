@@ -23,6 +23,7 @@ async function run(): Promise<void> {
     const issueKey = githubConnector.getIssueKeyFromTitle();
 
     if (!issueKey) {
+      console.log(`JIRA key was not found`);
       process.exit(0);
     }
 
