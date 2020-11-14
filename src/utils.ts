@@ -37,7 +37,6 @@ export const shouldSkipBranch = (branch: string, additionalIgnorePattern?: strin
     return true;
   }
 
-  console.log(`branch '${branch}' does not match ignore pattern provided in 'skip-branches' option:`, ignorePattern);
   return false;
 };
 
