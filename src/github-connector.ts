@@ -25,7 +25,7 @@ export class GithubConnector {
   getIssueKeyFromTitle(): string | null {
     const { JIRA_PROJECT_KEY, CUSTOM_ISSUE_NUMBER_REGEXP, USE_BRANCH_NAME } = getInputs();
 
-    const shouldUseCustomRegexp = !!CUSTOM_ISSUE_NUMBER_REGEXP && !!JIRA_PROJECT_KEY;
+    const shouldUseCustomRegexp = !!CUSTOM_ISSUE_NUMBER_REGEXP;
     const prTitle = this.githubData.pullRequest.title;
     const branchName = this.headBranch;
     const stringToParse = USE_BRANCH_NAME ? branchName : prTitle;
