@@ -62,6 +62,7 @@ export class GithubConnector {
   }
 
   private getGithubData(): IGithubData {
+    console.log(context);
     const {
       eventName,
       payload: {
