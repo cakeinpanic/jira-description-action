@@ -1,7 +1,7 @@
 import { getJIRAIssueKey, getJIRAIssueKeysByCustomRegexp, getPRDescription, shouldSkipBranch } from '../src/utils';
 import { HIDDEN_MARKER_END, HIDDEN_MARKER_START, WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS } from '../src/constants';
 
-jest.spyOn(console, 'log').mockImplementation(); // avoid actual console.log in test output
+//jest.spyOn(console, 'log').mockImplementation(); // avoid actual console.log in test output
 
 describe('shouldSkipBranch()', () => {
   it('should recognize bot PRs', () => {
@@ -39,11 +39,16 @@ describe('getJIRAIssueKeys()', () => {
   });
 });
 
-describe('getJIRAIssueKeysByCustomRegexp()', () => {
-  it('gets jira keys from different strings', () => {
+describe('getJIRAIssueKeysByCustomRegexp() gets jira keys from different strings', () => {
+  it.only('with project name', () => {
     expect(getJIRAIssueKeysByCustomRegexp('18,345', '\\d+', 'PRJ')).toEqual('PRJ-18');
     expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', '^\\d+', 'QQ')).toEqual(null);
     expect(getJIRAIssueKeysByCustomRegexp('43-login-protocol', '^\\d+', 'QQ')).toEqual('QQ-43');
+  });
+
+  it.only('without project name', () => {
+    expect(getJIRAIssueKeysByCustomRegexp('18,345', '\\d+')).toEqual('18');
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', 'es\\-\\d+')).toEqual('es-43');
   });
 });
 

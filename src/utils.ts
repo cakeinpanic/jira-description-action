@@ -9,15 +9,20 @@ import {
 import { JIRADetails } from './types';
 
 export const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
-  const matches = input.toUpperCase().match(regexp);
+  const matches = input.match(regexp);
   const keys = matches?.length ? matches : [null];
+  console.log(matches);
   return keys[0];
 };
 
-export const getJIRAIssueKeysByCustomRegexp = (input: string, numberRegexp: string, projectKey: string): string | null => {
-  const customRegexp = new RegExp(numberRegexp, 'g');
+export const getJIRAIssueKeysByCustomRegexp = (input: string, numberRegexp: string, projectKey?: string): string | null => {
+  const customRegexp = new RegExp(numberRegexp, 'gi');
+  console.log(customRegexp);
   const ticketNumber = getJIRAIssueKey(input, customRegexp);
-  return ticketNumber ? `${projectKey}-${ticketNumber}` : null;
+  if (!ticketNumber) {
+    return null;
+  }
+  return projectKey ? `${projectKey}-${ticketNumber}` : ticketNumber;
 };
 
 export const shouldSkipBranch = (branch: string, additionalIgnorePattern?: string): boolean => {
