@@ -1,7 +1,7 @@
 import { getInputs } from './action-inputs';
 import { IGithubData, JIRADetails, PullRequestParams } from './types';
 import { PullsUpdateParams } from '@octokit/rest';
-import { buildPRDescription, getJIRAIssueKey, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
+import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
 import { context, GitHub } from '@actions/github/lib/github';
 
 export class GithubConnector {
@@ -42,7 +42,7 @@ export class GithubConnector {
 
     return shouldUseCustomRegexp
       ? getJIRAIssueKeysByCustomRegexp(stringToParse, CUSTOM_ISSUE_NUMBER_REGEXP, JIRA_PROJECT_KEY)
-      : getJIRAIssueKey(stringToParse);
+      : getJIRAIssueKeyByDefaultRegexp(stringToParse);
   }
 
   async updatePrDetails(details: JIRADetails) {

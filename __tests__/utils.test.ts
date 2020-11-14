@@ -1,7 +1,7 @@
-import { getJIRAIssueKey, getJIRAIssueKeysByCustomRegexp, getPRDescription, shouldSkipBranch } from '../src/utils';
 import { HIDDEN_MARKER_END, HIDDEN_MARKER_START, WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS } from '../src/constants';
+import { getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription, shouldSkipBranch } from '../src/utils';
 
-//jest.spyOn(console, 'log').mockImplementation(); // avoid actual console.log in test output
+jest.spyOn(console, 'log').mockImplementation(); // avoid actual console.log in test output
 
 describe('shouldSkipBranch()', () => {
   it('should recognize bot PRs', () => {
@@ -30,12 +30,12 @@ describe('shouldSkipBranch()', () => {
 
 describe('getJIRAIssueKeys()', () => {
   it('gets jira key from different strings', () => {
-    expect(getJIRAIssueKey('fix/login-protocol-es-43')).toEqual('ES-43');
-    expect(getJIRAIssueKey('fix/login-protocol-ES-43')).toEqual('ES-43');
-    expect(getJIRAIssueKey('[ES-43, ES-15] Feature description')).toEqual('ES-43');
+    expect(getJIRAIssueKeyByDefaultRegexp('fix/login-protocol-es-43')).toEqual('ES-43');
+    expect(getJIRAIssueKeyByDefaultRegexp('fix/login-protocol-ES-43')).toEqual('ES-43');
+    expect(getJIRAIssueKeyByDefaultRegexp('[ES-43, ES-15] Feature description')).toEqual('ES-43');
 
-    expect(getJIRAIssueKey('feature/missingKey')).toEqual(null);
-    expect(getJIRAIssueKey('')).toEqual(null);
+    expect(getJIRAIssueKeyByDefaultRegexp('feature/missingKey')).toEqual(null);
+    expect(getJIRAIssueKeyByDefaultRegexp('')).toEqual(null);
   });
 });
 
@@ -48,12 +48,12 @@ describe('getJIRAIssueKeysByCustomRegexp() gets jira keys from different strings
 
   it('without project name', () => {
     expect(getJIRAIssueKeysByCustomRegexp('18,345', '\\d+')).toEqual('18');
-    expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', 'es\\-\\d+')).toEqual('es-43');
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', 'es\\-\\d+')).toEqual('ES-43');
   });
 
-  it.only('with remembered value in regexp', () => {
-    expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', '(es\\-\\d+)$')).toEqual('es-43');
-    expect(getJIRAIssueKeysByCustomRegexp('fix/login-20-in-14', '-(IN\\-\\d+)')).toEqual('in-14');
+  it('with grouped value in regexp', () => {
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-protocol-es-43', '(es\\-\\d+)$')).toEqual('ES-43');
+    expect(getJIRAIssueKeysByCustomRegexp('fix/login-20-in-14', '-(IN\\-\\d+)')).toEqual('IN-14');
     expect(getJIRAIssueKeysByCustomRegexp('fix/login-20-in-14', 'in\\-(\\d+)', 'PRJ')).toEqual('PRJ-20');
   });
 });

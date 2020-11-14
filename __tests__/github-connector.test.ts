@@ -2,7 +2,7 @@ import { GithubConnector } from '../src/github-connector';
 import { GitHub } from '@actions/github/lib/github';
 import { IActionInputs } from '../src/types';
 import { describe } from 'jest-circus';
-import { getJIRAIssueKey, getJIRAIssueKeysByCustomRegexp } from '../src/utils';
+import { getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp } from '../src/utils';
 import { getInputs } from '../src/action-inputs';
 
 const MOCK_INPUT: Partial<IActionInputs> = {
@@ -48,24 +48,24 @@ describe('Github connector()', () => {
           CUSTOM_ISSUE_NUMBER_REGEXP: 'CUSTOM_ISSUE_NUMBER_REGEXP',
         },
       };
-      const getJIRAIssueKeyReturnValue = 'getJIRAIssueKey';
+      const getJIRAIssueKeyReturnValue = 'getJIRAIssueKeyByDefaultRegexp';
       beforeEach(() => {
-        (getJIRAIssueKey as any).mockImplementation(() => getJIRAIssueKeyReturnValue);
+        (getJIRAIssueKeyByDefaultRegexp as any).mockImplementation(() => getJIRAIssueKeyReturnValue);
       });
-      it('calls getJIRAIssueKey method with branch name if USE_BRANCH_NAME === true', () => {
+      it('calls getJIRAIssueKeyByDefaultRegexp method with branch name if USE_BRANCH_NAME === true', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, USE_BRANCH_NAME: true }));
         connector = new GithubConnector();
 
         expect(connector.getIssueKeyFromTitle()).toEqual(getJIRAIssueKeyReturnValue);
-        expect(getJIRAIssueKey).toHaveBeenCalledWith(BRANCH_NAME);
+        expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(BRANCH_NAME);
       });
 
-      it('calls getJIRAIssueKey method with PR title if  USE_BRANCH_NAME !== true', () => {
+      it('calls getJIRAIssueKeyByDefaultRegexp method with PR title if  USE_BRANCH_NAME !== true', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, USE_BRANCH_NAME: false }));
         connector = new GithubConnector();
 
         expect(connector.getIssueKeyFromTitle()).toEqual(getJIRAIssueKeyReturnValue);
-        expect(getJIRAIssueKey).toHaveBeenCalledWith(PR_TITLE);
+        expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(PR_TITLE);
       });
     });
 
@@ -95,7 +95,7 @@ describe('Github connector()', () => {
         );
       });
 
-      it('calls getJIRAIssueKey method with PR title if  USE_BRANCH_NAME !== true', () => {
+      it('calls getJIRAIssueKeyByDefaultRegexp method with PR title if  USE_BRANCH_NAME !== true', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, USE_BRANCH_NAME: false }));
         connector = new GithubConnector();
 

@@ -8,23 +8,25 @@ import {
 } from './constants';
 import { JIRADetails } from './types';
 
-export const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
+const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
   const matches = regexp.exec(input);
-  if (!matches) {
-    return null;
-  }
+  return matches ? matches[matches.length - 1] : null;
+};
 
-  return matches[matches.length - 1];
+export const getJIRAIssueKeyByDefaultRegexp = (input: string): string | null => {
+  const key = getJIRAIssueKey(input, new RegExp(JIRA_REGEX_MATCHER));
+  return key ? key.toUpperCase() : null;
 };
 
 export const getJIRAIssueKeysByCustomRegexp = (input: string, numberRegexp: string, projectKey?: string): string | null => {
   const customRegexp = new RegExp(numberRegexp, 'gi');
-  console.log(customRegexp);
+
   const ticketNumber = getJIRAIssueKey(input, customRegexp);
   if (!ticketNumber) {
     return null;
   }
-  return projectKey ? `${projectKey}-${ticketNumber}` : ticketNumber;
+  const key = projectKey ? `${projectKey}-${ticketNumber}` : ticketNumber;
+  return key.toUpperCase();
 };
 
 export const shouldSkipBranch = (branch: string, additionalIgnorePattern?: string): boolean => {
