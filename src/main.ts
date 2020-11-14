@@ -2,14 +2,14 @@ import * as core from '@actions/core';
 import { shouldSkipBranch } from './utils';
 import { getInputs } from './action-inputs';
 import { GithubConnector } from './github-connector';
-import { JiraConnector } from './jira-connector';
+//import { JiraConnector } from './jira-connector';
 
 async function run(): Promise<void> {
   try {
     const { BRANCH_IGNORE_PATTERN } = getInputs();
 
     const githubConnector = new GithubConnector();
-    const jiraConnector = new JiraConnector();
+    //const jiraConnector = new JiraConnector();
 
     if (!githubConnector.isPRAction) {
       console.log('This action meant to be run only on PRs');
@@ -28,8 +28,8 @@ async function run(): Promise<void> {
 
     console.log(`JIRA key -> ${issueKey}`);
 
-    const details = await jiraConnector.getTicketDetails(issueKey);
-    await githubConnector.updatePrDetails(details);
+    //const details = await jiraConnector.getTicketDetails(issueKey);
+    //await githubConnector.updatePrDetails(details);
   } catch (error) {
     console.log({ error });
     core.setFailed(error.message);
