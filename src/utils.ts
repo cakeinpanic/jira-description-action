@@ -9,6 +9,7 @@ import {
 import { JIRADetails } from './types';
 
 const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
+  console.log(regexp, input);
   const matches = regexp.exec(input);
   return matches ? matches[matches.length - 1] : null;
 };

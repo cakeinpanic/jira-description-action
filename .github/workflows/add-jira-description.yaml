@@ -14,9 +14,8 @@ jobs:
           jira-token: ${{ secrets.JIRA_API_TOKEN }}
           jira-base-url: https://myjira.atlassian.net
           skip-branches: '^(production-.+|master)$'
-          use-branch-name: false
           jira-project-key: 'LAW'
-          custom-issue-number-regexp: '\\-(TEST\\-\\d+)'
+          custom-issue-number-regexp: '-(TEST-\d+)'
 
 
 

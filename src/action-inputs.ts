@@ -9,7 +9,7 @@ export const getInputs = (): IActionInputs => {
   const CUSTOM_ISSUE_NUMBER_REGEXP = core.getInput('custom-issue-number-regexp', { required: false });
   const JIRA_PROJECT_KEY = core.getInput('jira-project-key', { required: false });
 
-  const USE_BRANCH_NAME: boolean = Boolean(core.getInput('use-branch-name', { required: false }));
+  const USE_BRANCH_NAME: boolean = core.getInput('use-branch-name', { required: false }) === 'true';
   return {
     JIRA_TOKEN,
     GITHUB_TOKEN,
