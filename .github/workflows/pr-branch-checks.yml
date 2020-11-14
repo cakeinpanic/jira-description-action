@@ -9,36 +9,48 @@ jobs:
   build-test:
     runs-on: ubuntu-16.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      name: setup node
-      with:
-        node-version: '13.x'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        name: setup node
+        with:
+          node-version: '13.x'
 
-    - name: "install"
-      run: npm ci --production
+      - name: Cache node modules
+          uses: actions/cache@v2
+          env:
+            cache-name: cache-node-modules
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-build-${{ env.cache-name }}-
+              ${{ runner.os }}-build-
+              ${{ runner.os }}-
 
-    - name: "test"
-      run: npm run test
+      - name: "install"
+        run: npm ci --production
 
-    - name: "build"
-      run: npm run build
+      - name: "test"
+        run: npm run test
 
-    - name: "check if build has changed"
-      if: success()
-      id: has-changes
-      run: echo ::set-env name=LIB_DIFF::$(git diff  --stat -- 'lib')
+      - name: "build"
+        run: npm run build
 
-    - name: "Commit files"
-      if: ${{ env.LIB_DIFF }}
-      run: |
+      - name: "check if build has changed"
+        if: success()
+        id: has-changes
+        run: echo ::set-env name=LIB_DIFF::$(git diff  --stat -- 'lib')
+
+      - name: "Commit files"
+        if: ${{ env.LIB_DIFF }}
+        run: |
           git config --local user.email "buildaction@bot.bot"
           git config --local user.name "Build action bot"
           git commit -m "build action" -a
 
-    - name: "Push changes"
-      if: ${{ env.LIB_DIFF }}
-      uses: ad-m/github-push-action@master
-      with:
-         github_token: ${{ secrets.GITHUB_TOKEN }}
-         branch: ${{ github.ref }}
+      - name: "Push changes"
+        if: ${{ env.LIB_DIFF }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
