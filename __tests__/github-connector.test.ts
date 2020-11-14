@@ -40,12 +40,11 @@ describe('Github connector()', () => {
   });
 
   describe('getIssueKeyFromTitle()', () => {
-    describe('if some of JIRA_PROJECT_KEY and CUSTOM_ISSUE_NUMBER_REGEXP are empty', () => {
+    describe('if some CUSTOM_ISSUE_NUMBER_REGEXP is empty', () => {
       const INPUTS_MOCK = {
         ...MOCK_INPUT,
         ...{
-          JIRA_PROJECT_KEY: '',
-          CUSTOM_ISSUE_NUMBER_REGEXP: 'CUSTOM_ISSUE_NUMBER_REGEXP',
+          CUSTOM_ISSUE_NUMBER_REGEXP: '',
         },
       };
       const getJIRAIssueKeyReturnValue = 'getJIRAIssueKeyByDefaultRegexp';
