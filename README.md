@@ -38,7 +38,7 @@ When a PR passes the above check, `jira-description-action` will also add the is
 | `jira-token`           | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                          | true     | null    |
 | `jira-base-url`        | The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net".                                                                                                                                                                                                                    | true     | null    |
 | `skip-branches`        | A regex to ignore running `jira-description-action` on certain branches, like production etc.                                                                                                                                                                                                                                    | false    | ' '     |
-| `use-branch-name`      | Boolean to search for issue number in branch name or in PR title                                                                                                                                                                                                                                  | false    | false     |
+| `use`                  | Enum: branch|pr-title|both, to search for issue number in branch name or in PR title                                                                                                                                                                                                                               | false    | pr-title     |
 | `jira-project-key`     | Key of project in jira. First part of issue key | false    | none     |
 | `custom-issue-number-regexp` | Custom regexp to extract issue number from branch name. If not specified, default regexp would be used.  | false    | none     |
 
@@ -61,7 +61,7 @@ Note: The user should have the [required permissions (mentioned under GET Issue)
 
 ### Searching in branch name/PR title
 
-By default issue key is searched in PR title(which can easily be changed). `use-branch-name` option can be set to true if you want to get issue key from branch name 
+By default issue key is searched in PR title(which can easily be changed). `use` option can be set to `branch` if you want to get issue key from branch name. Or to `both` to look first in pr-title, then in branch name
 
 ### Using custom regex
 If `custom-issue-number-regexp` is not provided, full key of issue is searched using regexp `/([a-zA-Z0-9]{1,10}-\d+)/g;`.
