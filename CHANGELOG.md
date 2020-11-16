@@ -1,3 +1,6 @@
+## 0.2.0
+* Replace `use-branch-name` with `use`
+
 ## 0.1.2
 * Add regexp groups support
 * Allow usage without project name
