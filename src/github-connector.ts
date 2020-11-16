@@ -39,6 +39,8 @@ export class GithubConnector {
     const { JIRA_PROJECT_KEY, CUSTOM_ISSUE_NUMBER_REGEXP } = getInputs();
     const shouldUseCustomRegexp = !!CUSTOM_ISSUE_NUMBER_REGEXP;
 
+    console.log(`looking in: ${stringToParse}`);
+
     return shouldUseCustomRegexp
       ? getJIRAIssueKeysByCustomRegexp(stringToParse, CUSTOM_ISSUE_NUMBER_REGEXP, JIRA_PROJECT_KEY)
       : getJIRAIssueKeyByDefaultRegexp(stringToParse);
