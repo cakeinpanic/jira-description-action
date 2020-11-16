@@ -15,31 +15,11 @@ jobs:
         with:
           node-version: '13.x'
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: "install"
-        run: npm ci --production
-
-      - name: "test"
-        run: npm run test
-
-      - name: "build"
-        run: npm run build
-
       - name: "check if build has changed"
         if: success()
         id: has-changes
-        run: echo "LIB_DIFF='$(git diff  --numstat -- lib)'"  >> $GITHUB_ENV
+        run: |
+            echo "LIB_DIFF=$(git diff --stat -- lib)"  >> $GITHUB_ENV
 
       - name: "Commit files"
         if: ${{ env.LIB_DIFF }}
