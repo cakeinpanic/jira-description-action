@@ -39,7 +39,7 @@ jobs:
       - name: "check if build has changed"
         if: success()
         id: has-changes
-        run: echo ::set-env name=LIB_DIFF::$(git diff  --stat -- 'lib')
+        run: echo "LIB_DIFF='$(git diff  --numstat -- lib)'"  >> $GITHUB_ENV
 
       - name: "Commit files"
         if: ${{ env.LIB_DIFF }}
