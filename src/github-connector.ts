@@ -1,8 +1,8 @@
-import { getInputs } from './action-inputs';
-import { IGithubData, JIRADetails, PullRequestParams } from './types';
-import { PullsUpdateParams } from '@octokit/rest';
-import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
 import { context, GitHub } from '@actions/github/lib/github';
+import { PullsUpdateParams } from '@octokit/rest';
+import { getInputs } from './action-inputs';
+import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
+import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
 
 export class GithubConnector {
   client: GitHub = {} as GitHub;
@@ -23,22 +23,21 @@ export class GithubConnector {
   }
 
   getIssueKeyFromTitle(): string | null {
-    const { JIRA_PROJECT_KEY, CUSTOM_ISSUE_NUMBER_REGEXP, USE_BRANCH_NAME } = getInputs();
+    const { WHAT_TO_USE } = getInputs();
 
-    const shouldUseCustomRegexp = !!CUSTOM_ISSUE_NUMBER_REGEXP;
-    const prTitle = this.githubData.pullRequest.title;
+    const prTitle = this.githubData.pullRequest.title || '';
     const branchName = this.headBranch;
-    const stringToParse = USE_BRANCH_NAME ? branchName : prTitle;
 
-    if (!stringToParse) {
-      if (USE_BRANCH_NAME) {
-        console.log(`JIRA issue id is missing in your branch ${branchName}, doing nothing`);
-      } else {
-        console.log(`JIRA issue id is missing in your PR title ${prTitle}, doing nothing`);
-      }
-
-      return null;
+    if (WHAT_TO_USE === ESource.both) {
+      return this.getIssueKeyFromString(prTitle) || this.getIssueKeyFromString(branchName);
     }
+
+    return WHAT_TO_USE === ESource.branch ? this.getIssueKeyFromString(branchName) : this.getIssueKeyFromString(prTitle);
+  }
+
+  private getIssueKeyFromString(stringToParse: string): string | null {
+    const { JIRA_PROJECT_KEY, CUSTOM_ISSUE_NUMBER_REGEXP } = getInputs();
+    const shouldUseCustomRegexp = !!CUSTOM_ISSUE_NUMBER_REGEXP;
 
     return shouldUseCustomRegexp
       ? getJIRAIssueKeysByCustomRegexp(stringToParse, CUSTOM_ISSUE_NUMBER_REGEXP, JIRA_PROJECT_KEY)

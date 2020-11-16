@@ -1,5 +1,5 @@
-import { IActionInputs } from './types';
 import * as core from '@actions/core';
+import { ESource, IActionInputs } from './types';
 
 export const getInputs = (): IActionInputs => {
   const JIRA_TOKEN: string = core.getInput('jira-token', { required: true });
@@ -9,11 +9,11 @@ export const getInputs = (): IActionInputs => {
   const CUSTOM_ISSUE_NUMBER_REGEXP = core.getInput('custom-issue-number-regexp', { required: false });
   const JIRA_PROJECT_KEY = core.getInput('jira-project-key', { required: false });
 
-  const USE_BRANCH_NAME: boolean = core.getInput('use-branch-name', { required: false }) === 'true';
+  const WHAT_TO_USE: ESource = (core.getInput('use', { required: false }) as ESource) || ESource.prTitle;
   return {
     JIRA_TOKEN,
     GITHUB_TOKEN,
-    USE_BRANCH_NAME,
+    WHAT_TO_USE,
     BRANCH_IGNORE_PATTERN,
     JIRA_PROJECT_KEY,
     CUSTOM_ISSUE_NUMBER_REGEXP,

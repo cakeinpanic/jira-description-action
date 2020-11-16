@@ -11,8 +11,8 @@ inputs:
   jira-base-url:
     description: 'The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net"'
     required: true
-  use-branch-name:
-    description: 'Set true if you want to use branch name for getting issue key'
+  use:
+    description: 'Where to look for issue key: branch | pr-title | both'
     required: false
   skip-branches:
     description: 'A regex to ignore running on certain branches, like production etc.'

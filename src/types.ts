@@ -1,3 +1,9 @@
+export enum ESource {
+  branch = 'branch',
+  prTitle = 'pr-title',
+  both = 'both',
+}
+
 export interface PullRequestParams {
   number: number;
   html_url?: string;
@@ -11,6 +17,7 @@ export interface PullRequestParams {
   changed_files?: number;
   additions?: number;
   title?: string;
+
   [key: string]: unknown;
 }
 
@@ -86,7 +93,7 @@ export interface JIRADetails {
 
 export interface IActionInputs {
   JIRA_TOKEN: string;
-  USE_BRANCH_NAME: boolean;
+  WHAT_TO_USE: ESource;
   JIRA_BASE_URL: string;
   GITHUB_TOKEN: string;
   BRANCH_IGNORE_PATTERN: string;
