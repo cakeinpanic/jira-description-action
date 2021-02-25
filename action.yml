@@ -26,6 +26,10 @@ inputs:
       description: ' Custom regexp to extract issue number from branch name.'
       required: false
       default: ''
+  fail-pr-when-jira-issue-not-found:
+      description: ' Mark the PR status check as failed when a jira issue is not found'
+      required: false
+      default: ''
 runs:
   using: 'node12'
   main: 'lib/index.js'

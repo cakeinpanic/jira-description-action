@@ -7,6 +7,7 @@ import { JiraConnector } from './jira-connector';
 async function run(): Promise<void> {
   try {
     const { BRANCH_IGNORE_PATTERN } = getInputs();
+    const { FAIL_PR_WHEN_JIRA_ISSUE_NOT_FOUND } = getInputs();
 
     const githubConnector = new GithubConnector();
     const jiraConnector = new JiraConnector();
@@ -23,8 +24,13 @@ async function run(): Promise<void> {
     const issueKey = githubConnector.getIssueKeyFromTitle();
 
     if (!issueKey) {
-      console.log(`JIRA key was not found`);
-      process.exit(0);
+      if (FAIL_PR_WHEN_JIRA_ISSUE_NOT_FOUND === 'true') {
+        console.log(`JIRA key was not found. Marking PR status as failed!`);
+        process.exit(1);
+      } else {
+        console.log(`JIRA key was not found`);
+        process.exit(0);
+      }
     }
 
     console.log(`JIRA key -> ${issueKey}`);
