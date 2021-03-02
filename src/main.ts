@@ -5,7 +5,7 @@ import { GithubConnector } from './github-connector';
 import { JiraConnector } from './jira-connector';
 
 async function run(): Promise<void> {
-  const { FAIL_PR_WHEN_JIRA_ISSUE_NOT_FOUND } = getInputs();
+  const { FAIL_WHEN_JIRA_ISSUE_NOT_FOUND } = getInputs();
   try {
     const { BRANCH_IGNORE_PATTERN } = getInputs();
 
@@ -23,24 +23,18 @@ async function run(): Promise<void> {
 
     const issueKey = githubConnector.getIssueKeyFromTitle();
 
-    if (!issueKey) {
-      console.log(`JIRA key was not found`);
-      if (FAIL_PR_WHEN_JIRA_ISSUE_NOT_FOUND === 'true') {
-        console.log('Setting PR status as failed');
-        process.exit(1);
-      } else {
-        console.log('Ignore the errors and set PR status as success');
-        process.exit(0);
-      }
-    }
+    if (!issueKey) throw core.error;
 
     console.log(`JIRA key -> ${issueKey}`);
 
-    await jiraConnector.getTicketDetails(issueKey, FAIL_PR_WHEN_JIRA_ISSUE_NOT_FOUND);
+    await jiraConnector.getTicketDetails(issueKey);
   } catch (error) {
-    console.log('Something went wrong!');
-    console.log({ error });
-    core.setFailed(error.message);
+    console.log('JIRA key was not found');
+    if (FAIL_WHEN_JIRA_ISSUE_NOT_FOUND) {
+      console.log({ error });
+      core.setFailed(error.message);
+      process.exit(1);
+    } else process.exit(0);
   }
 }
 
