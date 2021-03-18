@@ -1,7 +1,6 @@
 import { getInputs } from './action-inputs';
 import axios, { AxiosInstance } from 'axios';
 import { JIRA } from './types';
-import { GithubConnector } from './github-connector';
 
 export class JiraConnector {
   client: AxiosInstance;
@@ -23,15 +22,14 @@ export class JiraConnector {
     });
   }
 
-  async getTicketDetails(key: string): Promise<void> {
+  async getTicketDetails(key: string): Promise<any> {
     try {
-      const githubConnector = new GithubConnector();
       const issue: JIRA.Issue = await this.getIssue(key);
       const {
         fields: { issuetype: type, project, summary },
       } = issue;
 
-      const details = {
+      return {
         key,
         summary,
         url: `${this.JIRA_BASE_URL}/browse/${key}`,
@@ -45,10 +43,8 @@ export class JiraConnector {
           key: project.key,
         },
       };
-      await githubConnector.updatePrDetails(details);
     } catch (error) {
       if (error.response) {
-        console.log('Error code - ' + error.response.status);
         console.log(error.response.data);
         throw error;
       }
