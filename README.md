@@ -41,6 +41,7 @@ When a PR passes the above check, `jira-description-action` will also add the is
 | `use`                  | Enum: `branch \| pr-title \| both`, to search for issue number in branch name or in PR title                                                                                                                                                                                                                               | false    | pr-title     |
 | `jira-project-key`     | Key of project in jira. First part of issue key | false    | none     |
 | `custom-issue-number-regexp` | Custom regexp to extract issue number from branch name. If not specified, default regexp would be used.  | false    | none     |
+| ` fail-when-jira-issue-not-found` | Should action fail if jira issue is not found in jira  | false    | false     |
 
 Tokens are private, so it's suggested adding them as [GitHub secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
 

@@ -29,7 +29,7 @@ inputs:
   fail-when-jira-issue-not-found:
       description: ' Mark the PR status check as failed when a jira issue is not found'
       required: false
-      default: ''
+      default: 'false'
 runs:
   using: 'node12'
   main: 'lib/index.js'
