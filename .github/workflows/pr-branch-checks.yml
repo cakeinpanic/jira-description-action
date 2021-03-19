@@ -41,7 +41,7 @@ jobs:
         if: success()
         id: has-changes
         run: |
-          echo "LIB_DIFF=$(git diff --stat -- lib)"  >> $GITHUB_ENV
+          echo "LIB_DIFF=$(git diff --stat --name-only  -- lib)"  >> $GITHUB_ENV
 
       - name: "Commit files"
         if: ${{ env.LIB_DIFF }}
