@@ -5,6 +5,7 @@ import { GithubConnector } from './github-connector';
 import { JiraConnector } from './jira-connector';
 
 async function run(): Promise<void> {
+  const { FAIL_WHEN_JIRA_ISSUE_NOT_FOUND } = getInputs();
   try {
     const { BRANCH_IGNORE_PATTERN } = getInputs();
 
@@ -22,19 +23,21 @@ async function run(): Promise<void> {
 
     const issueKey = githubConnector.getIssueKeyFromTitle();
 
-    if (!issueKey) {
-      console.log(`JIRA key was not found`);
-      process.exit(0);
-    }
+    if (!issueKey) throw core.error;
 
     console.log(`JIRA key -> ${issueKey}`);
 
     const details = await jiraConnector.getTicketDetails(issueKey);
     await githubConnector.updatePrDetails(details);
   } catch (error) {
-    console.log({ error });
-    core.setFailed(error.message);
-    process.exit(1);
+    console.log('JIRA key was not found');
+    if (FAIL_WHEN_JIRA_ISSUE_NOT_FOUND) {
+      console.log({ error });
+      core.setFailed(error.message);
+      process.exit(1);
+    } else {
+      process.exit(0);
+    }
   }
 }
 

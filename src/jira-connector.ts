@@ -1,6 +1,6 @@
 import { getInputs } from './action-inputs';
 import axios, { AxiosInstance } from 'axios';
-import { JIRA, JIRADetails } from './types';
+import { JIRA } from './types';
 
 export class JiraConnector {
   client: AxiosInstance;
@@ -22,26 +22,33 @@ export class JiraConnector {
     });
   }
 
-  async getTicketDetails(key: string): Promise<JIRADetails> {
-    const issue: JIRA.Issue = await this.getIssue(key);
-    const {
-      fields: { issuetype: type, project, summary },
-    } = issue;
+  async getTicketDetails(key: string): Promise<any> {
+    try {
+      const issue: JIRA.Issue = await this.getIssue(key);
+      const {
+        fields: { issuetype: type, project, summary },
+      } = issue;
 
-    return {
-      key,
-      summary,
-      url: `${this.JIRA_BASE_URL}/browse/${key}`,
-      type: {
-        name: type.name,
-        icon: type.iconUrl,
-      },
-      project: {
-        name: project.name,
-        url: `${this.JIRA_BASE_URL}/browse/${project.key}`,
-        key: project.key,
-      },
-    };
+      return {
+        key,
+        summary,
+        url: `${this.JIRA_BASE_URL}/browse/${key}`,
+        type: {
+          name: type.name,
+          icon: type.iconUrl,
+        },
+        project: {
+          name: project.name,
+          url: `${this.JIRA_BASE_URL}/browse/${project.key}`,
+          key: project.key,
+        },
+      };
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        throw error;
+      }
+    }
   }
 
   async getIssue(id: string): Promise<JIRA.Issue> {
