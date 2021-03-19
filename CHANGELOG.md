@@ -1,3 +1,6 @@
+## 0.3.0
+* Add `fail-when-jira-issue-not-found` input
+
 ## 0.2.0
 * Replace `use-branch-name` with `use`
 
