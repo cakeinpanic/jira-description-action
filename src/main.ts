@@ -25,8 +25,9 @@ async function run(): Promise<void> {
 
     const details = await jiraConnector.getTicketDetails(issueKey);
 
-    console.log(`Details -> ${details}`);
+    console.log(`Details -> ${JSON.stringify(details.customfield_10063)}`);
 
+    // const users = await githubConnector.getUserFromEmail(details.customfield_10063.emailAddress);
     await githubConnector.updatePrDetails(details);
   } catch (error) {
     console.log('JIRA key was not found');
