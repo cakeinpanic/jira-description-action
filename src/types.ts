@@ -79,7 +79,7 @@ export namespace JIRA {
 
 export interface JIRADetails {
   key: string;
-  customfield_10063: string;
+  customfield_10063: any;
   summary: string;
   url: string;
   type: {
