@@ -74,7 +74,7 @@ export const buildPRDescription = (details: JIRADetails) => {
 <td>
   <a href="${details.url}" title="${displayKey}" target="_blank"><img alt="${details.type.name}" src="${details.type.icon}" />${displayKey}</a>  ${details.summary}
   </td></table>
-  <h4><b>Dev Lead:</b> ${details.customfield_10063.displayName}</h4>
+  <h4><strong>Dev Lead:</strong> ${details.customfield_10063.displayName}</h4>
   <br />
 `;
 };
