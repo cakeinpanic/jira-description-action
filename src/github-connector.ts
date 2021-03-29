@@ -15,7 +15,7 @@ export class GithubConnector {
   }
 
   get isPRAction(): boolean {
-    return this.githubData.eventName === 'pull_request';
+    return this.githubData.eventName === 'pull_request' || this.githubData.eventName === 'pull_request_target';
   }
 
   get headBranch(): string {
