@@ -16,15 +16,15 @@ jobs:
   add-jira-description:
     runs-on: ubuntu-latest
     steps:
-      - uses: cakeinpanic/jira-description-action@v0.3.0
+      - uses: cakeinpanic/jira-description-action@v1.2
         name: jira-description-action
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-token: ${{ secrets.JIRA_TOKEN }}
           jira-base-url: https://your-domain.atlassian.net
-          skip-branches: '^(production-release|master|release\/v\d+)$' #optional 
+          skip-branches: '^(production-release|main|master|release\/v\d+)$' #optional 
           custom-issue-number-regexp: '^\d+' #optional
-          jira-project-name: 'PRJ' #optional    
+          jira-project-key: 'PRJ' #optional    
 ```
 `
 ## Features
