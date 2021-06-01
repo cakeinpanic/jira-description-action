@@ -1,5 +1,5 @@
-import { context } from '@actions/github/lib/github';
 import github from '@actions/github';
+import core from '@actions/core';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription, getReviewer } from './utils';
@@ -7,11 +7,14 @@ import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByC
 export class GithubConnector {
   githubData: IGithubData = {} as IGithubData;
   client: any;
+  context: any;
 
   constructor() {
+    this.context = github.context;
     const { GITHUB_TOKEN } = getInputs();
+    const myToken = core.getInput(GITHUB_TOKEN);
     console.log('constructor');
-    this.client = github.getOctokit(GITHUB_TOKEN);
+    this.client = github.getOctokit(myToken);
     console.log('octo', this.client);
     this.githubData = this.getGithubData();
     console.log('ghd1', this.githubData);
