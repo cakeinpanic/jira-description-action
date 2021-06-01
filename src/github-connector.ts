@@ -91,6 +91,12 @@ export class GithubConnector {
       },
     } = context;
 
+    console.log('test', {
+      eventName,
+      repository,
+      owner,
+      pullRequest: pullRequest as PullRequestParams,
+    });
     return {
       eventName,
       repository,
