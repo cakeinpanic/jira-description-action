@@ -1,5 +1,6 @@
 import github from '@actions/github';
 import core from '@actions/core';
+import { context } from '@actions/github/lib/github';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription, getReviewer } from './utils';
@@ -10,8 +11,8 @@ export class GithubConnector {
   context: any;
 
   constructor() {
-    this.context = github.context;
-    console.log('context', github.context);
+    this.context = context;
+    console.log('context', context);
     const { GITHUB_TOKEN } = getInputs();
     console.log('tok1', GITHUB_TOKEN);
     const myToken = core.getInput(GITHUB_TOKEN);
