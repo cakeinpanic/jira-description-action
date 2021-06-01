@@ -7,7 +7,7 @@ inputs:
     required: true
   jira-token:
     description: 'API Token used to access the JIRA REST API. Must have read access to your JIRA Projects & Issues. Format: <jira username>:<jira token>'
-    required: true
+    required: false
   jira-base-url:
     description: 'The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net"'
     required: true
@@ -30,6 +30,12 @@ inputs:
       description: ' Mark the PR status check as failed when a jira issue is not found'
       required: false
       default: 'false'
+  jira-user:
+    description: 'Jira user name to authenticate with'
+    required: true
+  jira-password:
+    description: 'Jira password to authenitcate with'
+    required: true
 runs:
   using: 'node12'
   main: 'lib/index.js'

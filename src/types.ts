@@ -100,6 +100,8 @@ export interface IActionInputs {
   JIRA_PROJECT_KEY: string;
   CUSTOM_ISSUE_NUMBER_REGEXP: string;
   FAIL_WHEN_JIRA_ISSUE_NOT_FOUND: boolean;
+  JIRA_USER: string;
+  JIRA_PASSWORD: string;
 }
 
 export interface IGithubData {
