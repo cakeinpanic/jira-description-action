@@ -9,7 +9,6 @@ export class GithubConnector {
   client: any;
 
   constructor() {
-    console.log('cons1', context);
     const { GITHUB_TOKEN } = getInputs();
     console.log('constructor');
     this.client = github.getOctokit(GITHUB_TOKEN);
