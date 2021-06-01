@@ -13,7 +13,7 @@ export class GithubConnector {
     this.context = github.context;
     const { GITHUB_TOKEN } = getInputs();
     const myToken = core.getInput(GITHUB_TOKEN);
-    console.log('constructor');
+    console.log('token', myToken);
     this.client = github.getOctokit(myToken);
     console.log('octo', this.client);
     this.githubData = this.getGithubData();
@@ -91,7 +91,7 @@ export class GithubConnector {
         organization: { login: owner },
         pull_request: pullRequest,
       },
-    } = context;
+    } = this.context;
 
     console.log('test', {
       eventName,
