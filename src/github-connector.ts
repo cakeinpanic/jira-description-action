@@ -25,6 +25,7 @@ export class GithubConnector {
   getIssueKeyFromTitle(): string {
     const { WHAT_TO_USE } = getInputs();
 
+    console.log('ghdata', this.githubData);
     const prTitle = this.githubData.pullRequest.title || '';
     const branchName = this.headBranch;
 
