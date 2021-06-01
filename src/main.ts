@@ -9,6 +9,7 @@ async function run(): Promise<void> {
   try {
     const { BRANCH_IGNORE_PATTERN } = getInputs();
 
+    console.log('trying');
     const githubConnector = new GithubConnector();
     const jiraConnector = new JiraConnector();
 
