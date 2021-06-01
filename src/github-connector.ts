@@ -12,8 +12,8 @@ export class GithubConnector {
 
   constructor() {
     this.context = context;
-    console.log('token', core.getInput('GITHUB_TOKEN'));
-    const myToken = core.getInput('GITHUB_TOKEN');
+    console.log('token', core.getInput('github-token'));
+    const myToken = core.getInput('github-token');
     console.log('token', myToken);
     this.client = github.getOctokit(myToken);
     console.log('octo', this.client);
