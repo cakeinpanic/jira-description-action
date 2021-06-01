@@ -1,5 +1,4 @@
-import github from '@actions/github';
-import core from '@actions/core';
+import * as github from '@actions/github';
 import { context } from '@actions/github/lib/github';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
@@ -12,10 +11,8 @@ export class GithubConnector {
 
   constructor() {
     this.context = context;
-    console.log('token', core.getInput('github-token'));
-    const myToken = core.getInput('github-token');
-    console.log('token', myToken);
-    this.client = github.getOctokit(myToken);
+    const { GITHUB_TOKEN } = getInputs();
+    this.client = github.getOctokit(GITHUB_TOKEN);
     console.log('octo', this.client);
     this.githubData = this.getGithubData();
     console.log('ghd1', this.githubData);
