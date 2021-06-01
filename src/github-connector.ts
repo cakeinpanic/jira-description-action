@@ -9,10 +9,11 @@ export class GithubConnector {
   client: any;
 
   constructor() {
-    console.log('cons1');
+    console.log('cons1', context);
     const { GITHUB_TOKEN } = getInputs();
     console.log('constructor');
     this.client = github.getOctokit(GITHUB_TOKEN);
+    console.log('octo', this.client);
     this.githubData = this.getGithubData();
     console.log('ghd1', this.githubData);
   }
