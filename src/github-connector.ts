@@ -107,15 +107,14 @@ export class GithubConnector {
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
     const { number: prNumber = 0 } = this.githubData.pullRequest;
-    const reviewers: Array<any> = [];
-
-    console.log('reviewer', getReviewer(details));
+    const reviewer = getReviewer(details);
+    console.log('reviewer', reviewer);
 
     const prData = {
       owner,
       repo,
       pull_number: prNumber,
-      reviewers: reviewers,
+      reviewers: [reviewer],
     };
     await this.client.pulls.requestReviewers(prData);
   }

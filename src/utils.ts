@@ -79,6 +79,18 @@ export const buildPRDescription = (details: JIRADetails) => {
 `;
 };
 
-export const getReviewer = (details: JIRADetails) => {
-  return details.customfield_10063;
+export const getReviewer = (details: JIRADetails): string => {
+  const jiraReviewer = details.customfield_10063;
+  const email: string = jiraReviewer?.emailAddress;
+
+  const mapping: {
+    [key: string]: string;
+  } = {
+    'dustin@carserv.com': 'dustinblanchard',
+    'hakan@carserv.com': 'htelsiz',
+    'lawrence@carserv.com': 'lboogie04',
+    'dinesh@carserv.com': 'dinesh-carserv',
+  };
+
+  return mapping[email] || '';
 };
