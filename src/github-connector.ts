@@ -1,16 +1,16 @@
-import { context, GitHub } from '@actions/github/lib/github';
-import { PullsUpdateParams } from '@octokit/rest';
+import { context } from '@actions/github/lib/github';
+import github from '@actions/github';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
 
 export class GithubConnector {
-  client: GitHub = {} as GitHub;
   githubData: IGithubData = {} as IGithubData;
+  client: any;
 
   constructor() {
     const { GITHUB_TOKEN } = getInputs();
-    this.client = new GitHub(GITHUB_TOKEN);
+    this.client = github.getOctokit(GITHUB_TOKEN);
     this.githubData = this.getGithubData();
   }
 
@@ -66,7 +66,7 @@ export class GithubConnector {
     console.log('Updating PR details');
     const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
 
-    const prData: PullsUpdateParams = {
+    const prData = {
       owner,
       repo,
       pull_number: prNumber,
@@ -99,5 +99,20 @@ export class GithubConnector {
       q: `${email} in:email`,
     });
     return users;
+  }
+
+  async requestReview() {
+    const owner = this.githubData.owner;
+    const repo = this.githubData.repository.name;
+    const { number: prNumber = 0 } = this.githubData.pullRequest;
+    const reviewers: Array<any> = [];
+
+    const prData = {
+      owner,
+      repo,
+      pull_number: prNumber,
+      reviewers: reviewers,
+    };
+    this.client.pulls.requestReviewers(prData);
   }
 }

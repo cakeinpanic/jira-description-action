@@ -78,3 +78,7 @@ export const buildPRDescription = (details: JIRADetails) => {
   <br />
 `;
 };
+
+export const getReviewer = (details: JIRADetails) => {
+  console.log('dev lead', details.customfield_10063);
+};
