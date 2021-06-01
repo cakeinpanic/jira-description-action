@@ -2,7 +2,7 @@ import { context } from '@actions/github/lib/github';
 import github from '@actions/github';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
-import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
+import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription, getReviewer } from './utils';
 
 export class GithubConnector {
   githubData: IGithubData = {} as IGithubData;
@@ -101,11 +101,13 @@ export class GithubConnector {
     return users;
   }
 
-  async requestReview() {
+  async requestReview(details: JIRADetails) {
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
     const { number: prNumber = 0 } = this.githubData.pullRequest;
     const reviewers: Array<any> = [];
+
+    console.log(getReviewer(details));
 
     const prData = {
       owner,
@@ -113,6 +115,6 @@ export class GithubConnector {
       pull_number: prNumber,
       reviewers: reviewers,
     };
-    this.client.pulls.requestReviewers(prData);
+    await this.client.pulls.requestReviewers(prData);
   }
 }
