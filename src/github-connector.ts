@@ -102,6 +102,7 @@ export class GithubConnector {
   }
 
   async requestReview(details: JIRADetails) {
+    console.log('requesting review');
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
     const { number: prNumber = 0 } = this.githubData.pullRequest;
