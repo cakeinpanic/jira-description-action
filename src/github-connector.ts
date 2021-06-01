@@ -10,13 +10,9 @@ export class GithubConnector {
 
   constructor() {
     this.context = github.context;
-    console.log('context', this.context);
     const { GITHUB_TOKEN } = getInputs();
-    console.log('token', GITHUB_TOKEN);
     this.client = github.getOctokit(GITHUB_TOKEN);
-    console.log('octo', this.client);
     this.githubData = this.getGithubData();
-    console.log('ghd1', this.githubData);
   }
 
   get isPRAction(): boolean {
