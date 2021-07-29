@@ -53,6 +53,45 @@ export class JiraConnector {
     }
   }
 
+  async addTicketComment(key: string): Promise<JIRADetails> {
+    try {
+      const issue: JIRA.Issue = await this.getIssue(key);
+      const {
+        fields: { issuetype: type, project, summary },
+      } = issue;
+
+      await this.addComment(key);
+
+      return {
+        key,
+        summary,
+        url: `${this.JIRA_BASE_URL}/browse/${key}`,
+        type: {
+          name: type.name,
+          icon: type.iconUrl,
+        },
+        project: {
+          name: project.name,
+          url: `${this.JIRA_BASE_URL}/browse/${project.key}`,
+          key: project.key,
+        },
+      };
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      }
+      throw error;
+    }
+  }
+
+  async addComment(id: string): Promise<JIRA.Issue> {
+    const url = `/issue/${id}/comment`;
+    const response = await this.client.post<JIRA.Issue>(url,{
+      body: 'test comment'
+    });
+    return response.data;
+  }
+
   async getIssue(id: string): Promise<JIRA.Issue> {
     const url = `/issue/${id}?fields=project,summary,issuetype`;
     const response = await this.client.get<JIRA.Issue>(url);
