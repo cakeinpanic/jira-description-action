@@ -3,7 +3,7 @@ import { shouldSkipBranch } from './utils';
 import { getInputs } from './action-inputs';
 import { GithubConnector } from './github-connector';
 import { JiraConnector } from './jira-connector';
-const convert = require('html-to-text');
+import { convert } from 'html-to-text'
 
 async function run(): Promise<void> {
   const { FAIL_WHEN_JIRA_ISSUE_NOT_FOUND } = getInputs();
@@ -29,9 +29,7 @@ async function run(): Promise<void> {
 
     const details = await jiraConnector.getTicketDetails(issueKey);
     const prBody = await githubConnector.updatePrDetails(details)  || '';
-    const prBodyText = convert(prBody, {
-          wordwrap: 130
-    });
+    const prBodyText = convert(prBody)
     await jiraConnector.addTicketComment(issueKey,prBodyText);
   } catch (error) {
     console.log(error);
