@@ -17,9 +17,9 @@ async function run(): Promise<void> {
        process.exit(0);
      }
 
-     if (shouldSkipBranch(githubConnector.headBranch, BRANCH_IGNORE_PATTERN)) {
-       process.exit(0);
-    }
+    if (shouldSkipBranch(githubConnector.headBranch, BRANCH_IGNORE_PATTERN)) {
+      process.exit(0);
+   }
 
     const issueKey = githubConnector.getIssueKeyFromTitle();
     if (!issueKey) throw core.error;
@@ -27,18 +27,18 @@ async function run(): Promise<void> {
     console.log(`JIRA key -> ${issueKey}`);
 
     const details = await jiraConnector.getTicketDetails(issueKey);
-    await githubConnector.updatePrDetails(details);
-    await jiraConnector.addTicketComment(issueKey);
+    const prbody = await githubConnector.updatePrDetails(details)  || '';
+    await jiraConnector.addTicketComment(issueKey,prbody);
   } catch (error) {
     console.log(error);
     console.log('JIRA key was not found');
-    if (FAIL_WHEN_JIRA_ISSUE_NOT_FOUND) {
-      console.log({ error });
-      core.setFailed(error.message);
-      process.exit(1);
-    } else {
-      process.exit(0);
-    }
+   if (FAIL_WHEN_JIRA_ISSUE_NOT_FOUND) {
+     console.log({ error });
+     core.setFailed(error.message);
+     process.exit(1);
+   } else {
+     process.exit(0);
+   }
   }
 }
 

@@ -53,14 +53,14 @@ export class JiraConnector {
     }
   }
 
-  async addTicketComment(key: string): Promise<JIRADetails> {
+  async addTicketComment(key: string, comment: string): Promise<JIRADetails> {
     try {
       const issue: JIRA.Issue = await this.getIssue(key);
       const {
         fields: { issuetype: type, project, summary },
       } = issue;
 
-      await this.addComment(key);
+      await this.addComment(key, comment);
 
       return {
         key,
@@ -84,10 +84,10 @@ export class JiraConnector {
     }
   }
 
-  async addComment(id: string): Promise<JIRA.Issue> {
+  async addComment(id: string, comment: string): Promise<JIRA.Issue> {
     const url = `/issue/${id}/comment`;
     const response = await this.client.post<JIRA.Issue>(url,{
-      body: 'test comment'
+      body: comment
     });
     return response.data;
   }
