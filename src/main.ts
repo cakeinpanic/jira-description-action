@@ -30,7 +30,8 @@ async function run(): Promise<void> {
     const details = await jiraConnector.getTicketDetails(issueKey);
     const prBody = await githubConnector.updatePrDetails(details)  || '';
     const options = {preserveNewlines:true,wordwrap:130};
-    const prBodyText = prBody.substring(
+    let prBodyText = prBody.replace(/#/g, "")
+    prBodyText = prBody.substring(
         prBody.lastIndexOf("Description"),
         prBody.lastIndexOf("Checklist")
       );
