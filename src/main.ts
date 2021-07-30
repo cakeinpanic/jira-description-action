@@ -29,8 +29,13 @@ async function run(): Promise<void> {
 
     const details = await jiraConnector.getTicketDetails(issueKey);
     const prBody = await githubConnector.updatePrDetails(details)  || '';
-    const prBodyText = convert(prBody)
-    await jiraConnector.addTicketComment(issueKey,prBodyText);
+    const options = {preserveNewlines:true,wordwrap:130};
+    const prBodyText = prBody.substring(
+        prBody.lastIndexOf("Description"),
+        prBody.lastIndexOf("Checklist")
+      );
+    const prDescription = convert(prBodyText,options);
+    await jiraConnector.addTicketComment(issueKey,prDescription);
   } catch (error) {
     console.log(error);
     console.log('JIRA key was not found');
