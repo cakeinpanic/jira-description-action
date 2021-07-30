@@ -12,17 +12,16 @@ async function run(): Promise<void> {
     const githubConnector = new GithubConnector();
     const jiraConnector = new JiraConnector();
 
-    if (!githubConnector.isPRAction) {
-      console.log('This action meant to be run only on PRs');
-      process.exit(0);
-    }
+     if (!githubConnector.isPRAction) {
+       console.log('This action meant to be run only on PRs');
+       process.exit(0);
+     }
 
-    if (shouldSkipBranch(githubConnector.headBranch, BRANCH_IGNORE_PATTERN)) {
-      process.exit(0);
+     if (shouldSkipBranch(githubConnector.headBranch, BRANCH_IGNORE_PATTERN)) {
+       process.exit(0);
     }
 
     const issueKey = githubConnector.getIssueKeyFromTitle();
-
     if (!issueKey) throw core.error;
 
     console.log(`JIRA key -> ${issueKey}`);
@@ -31,6 +30,7 @@ async function run(): Promise<void> {
     await githubConnector.updatePrDetails(details);
     await jiraConnector.addTicketComment(issueKey);
   } catch (error) {
+    console.log(error);
     console.log('JIRA key was not found');
     if (FAIL_WHEN_JIRA_ISSUE_NOT_FOUND) {
       console.log({ error });
