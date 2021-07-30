@@ -31,9 +31,9 @@ async function run(): Promise<void> {
     const prBody = await githubConnector.updatePrDetails(details)  || '';
     const options = {preserveNewlines:true,wordwrap:130};
     let prBodyText = prBody.replace(/#/g, "")
-    prBodyText = prBody.substring(
-        prBody.lastIndexOf("Description"),
-        prBody.lastIndexOf("Checklist")
+    prBodyText = prBodyText.substring(
+        prBodyText.lastIndexOf("Description"),
+        prBodyText.lastIndexOf("Checklist")
       );
     const prDescription = convert(prBodyText,options);
     await jiraConnector.addTicketComment(issueKey,prDescription);
