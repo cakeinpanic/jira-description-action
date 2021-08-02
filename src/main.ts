@@ -28,9 +28,9 @@ async function run(): Promise<void> {
     console.log(`JIRA key -> ${issueKey}`);
 
     const jiraDetails = await jiraConnector.getTicketDetails(issueKey);
-    const prData = await githubConnector.updatePrDetails(jiraDetails)  || '';
-    const prLink = `https://github.com/PerkinElmer/signals/pull/${prData.pull_number}`
-    const prBody = prData.body || '';
+    const prBody = await githubConnector.updatePrDetails(jiraDetails)  || '';
+    //const prLink = `https://github.com/PerkinElmer/signals/pull/${prData.pull_number}`
+    //const prBody = prData.body || '';
     const options = {preserveNewlines:true,wordwrap:130};
 
     let prBodyText = prBody.replace(/#/g,"")
@@ -38,7 +38,9 @@ async function run(): Promise<void> {
         prBodyText.lastIndexOf("Description"),
         prBodyText.lastIndexOf("Checklist")
       );
-    const prDescription = prLink + '\n' + convert(prBodyText,options);
+
+    //const prDescription = prLink + '\n' + convert(prBodyText,options);
+    const prDescription = convert(prBodyText,options);
     await jiraConnector.addTicketComment(issueKey,prDescription);
   } catch (error) {
     console.log(error);

@@ -59,7 +59,7 @@ export class GithubConnector {
       body: getPRDescription(prBody, buildPRDescription(details)),
     };
     await this.client.pulls.update(prData);
-    return prData
+    return prData.body
   }
 
   private getGithubData(): IGithubData {
