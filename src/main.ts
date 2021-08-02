@@ -29,18 +29,13 @@ async function run(): Promise<void> {
 
     const jiraDetails = await jiraConnector.getTicketDetails(issueKey);
     const prData = await githubConnector.updatePrDetails(jiraDetails)  || '';
-    const prNumber = prData.pull_number;
-    const prLink = `https://github.com/PerkinElmer/signals/pull/${prNumber}`
-
-    const prBody = prData.body || '';
+    const prLink = `https://github.com/PerkinElmer/signals/pull/${prData.pull_number}`
     const options = {preserveNewlines:true,wordwrap:130};
-
-    let prBodyText = prBody.replace(/#/g,"")
+    let prBodyText = (prData.body || '').replace(/#/g,"")
     prBodyText = prBodyText.substring(
         prBodyText.lastIndexOf("Description"),
         prBodyText.lastIndexOf("Checklist")
       );
-
     const prDescription = prLink + "\n\n" + convert(prBodyText,options);
     await jiraConnector.addTicketComment(issueKey,prDescription);
   } catch (error) {
