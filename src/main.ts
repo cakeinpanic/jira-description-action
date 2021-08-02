@@ -28,9 +28,10 @@ async function run(): Promise<void> {
     console.log(`JIRA key -> ${issueKey}`);
 
     const jiraDetails = await jiraConnector.getTicketDetails(issueKey);
-    const prBody = await githubConnector.updatePrDetails(jiraDetails)  || '';
+    const prData = await githubConnector.updatePrDetails(jiraDetails)  || '';
     //const prLink = `https://github.com/PerkinElmer/signals/pull/${prData.pull_number}`
-    //const prBody = prData.body || '';
+
+    const prBody = prData.body || '';
     const options = {preserveNewlines:true,wordwrap:130};
 
     let prBodyText = prBody.replace(/#/g,"")
