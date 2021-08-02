@@ -41,7 +41,7 @@ async function run(): Promise<void> {
         prBodyText.lastIndexOf("Checklist")
       );
 
-    const prDescription = prLink + convert(prBodyText,options);
+    const prDescription = prLink + "\n" + convert(prBodyText,options);
     //const prDescription = convert(prBodyText,options);
     await jiraConnector.addTicketComment(issueKey,prDescription);
   } catch (error) {
