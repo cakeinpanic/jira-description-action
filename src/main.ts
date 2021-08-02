@@ -29,8 +29,9 @@ async function run(): Promise<void> {
 
     const jiraDetails = await jiraConnector.getTicketDetails(issueKey);
     const prData = await githubConnector.updatePrDetails(jiraDetails)  || '';
-    //const prLink = `https://github.com/PerkinElmer/signals/pull/${prData.pull_number}`
-    const prLink = "https://github.com/PerkinElmer/signals/pull/3751"
+    const prNumber = prData.pull_number.toString() || '';
+    const prLink = `https://github.com/PerkinElmer/signals/pull/${prNumber}`
+    //const prLink = "https://github.com/PerkinElmer/signals/pull/3751"
 
     const prBody = prData.body || '';
     const options = {preserveNewlines:true,wordwrap:130};
@@ -41,7 +42,7 @@ async function run(): Promise<void> {
         prBodyText.lastIndexOf("Checklist")
       );
 
-    const prDescription = prLink + "\n" + convert(prBodyText,options);
+    const prDescription = prLink + "\n\n" + convert(prBodyText,options);
     //const prDescription = convert(prBodyText,options);
     await jiraConnector.addTicketComment(issueKey,prDescription);
   } catch (error) {
