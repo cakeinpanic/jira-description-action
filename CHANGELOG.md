@@ -1,3 +1,6 @@
+## 0.3.1
+* Don't fail if PR body is empty fixing https://github.com/cakeinpanic/jira-description-action/issues/17
+
 ## 0.3.0
 * Add `fail-when-jira-issue-not-found` input
 
