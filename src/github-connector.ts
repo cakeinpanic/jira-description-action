@@ -22,17 +22,31 @@ export class GithubConnector {
     return this.githubData.pullRequest.head.ref;
   }
 
-  getIssueKeyFromTitle(): string | null {
+  getIssueKeyFromTitle(): string {
     const { WHAT_TO_USE } = getInputs();
 
     const prTitle = this.githubData.pullRequest.title || '';
     const branchName = this.headBranch;
 
-    if (WHAT_TO_USE === ESource.both) {
-      return this.getIssueKeyFromString(prTitle) || this.getIssueKeyFromString(branchName);
+    let keyFound: string | null = null;
+
+    switch (WHAT_TO_USE) {
+      case ESource.branch:
+        keyFound = this.getIssueKeyFromString(branchName);
+        break;
+      case ESource.prTitle:
+        keyFound = this.getIssueKeyFromString(prTitle);
+        break;
+      case ESource.both:
+        keyFound = this.getIssueKeyFromString(prTitle) || this.getIssueKeyFromString(branchName);
+        break;
     }
 
-    return WHAT_TO_USE === ESource.branch ? this.getIssueKeyFromString(branchName) : this.getIssueKeyFromString(prTitle);
+    if (!keyFound) {
+      throw new Error('JIRA key not found');
+    }
+    console.log(`JIRA key found -> ${keyFound}`);
+    return keyFound;
   }
 
   private getIssueKeyFromString(stringToParse: string): string | null {
@@ -49,7 +63,7 @@ export class GithubConnector {
   async updatePrDetails(details: JIRADetails) {
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
-
+    console.log('Updating PR details');
     const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
 
     const prData: PullsUpdateParams = {

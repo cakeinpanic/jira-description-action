@@ -1,5 +1,5 @@
-import { getInputs } from './action-inputs';
 import axios, { AxiosInstance } from 'axios';
+import { getInputs } from './action-inputs';
 import { JIRA, JIRADetails } from './types';
 
 export class JiraConnector {
@@ -23,6 +23,8 @@ export class JiraConnector {
   }
 
   async getTicketDetails(key: string): Promise<JIRADetails> {
+    console.log(`Fetching ${key} details from JIRA`);
+
     try {
       const issue: JIRA.Issue = await this.getIssue(key);
       const {
@@ -45,7 +47,7 @@ export class JiraConnector {
       };
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        throw new Error(JSON.stringify(error.response, null, 4));
       }
       throw error;
     }
