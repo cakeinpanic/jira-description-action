@@ -1,5 +1,5 @@
 import { context, GitHub } from '@actions/github/lib/github';
-import { PullsUpdateParams } from '@octokit/rest';
+import Octokit, { PullsUpdateParams } from '@octokit/rest';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
@@ -7,10 +7,13 @@ import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByC
 export class GithubConnector {
   client: GitHub = {} as GitHub;
   githubData: IGithubData = {} as IGithubData;
+  octokit: Octokit;
 
   constructor() {
     const { GITHUB_TOKEN } = getInputs();
     this.client = new GitHub(GITHUB_TOKEN);
+    this.octokit = new Octokit({ auth: GITHUB_TOKEN });
+
     this.githubData = this.getGithubData();
   }
 
@@ -64,16 +67,30 @@ export class GithubConnector {
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
     console.log('Updating PR details');
-    const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
+    const { number: prNumber = 0 } = this.githubData.pullRequest;
+    const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
 
     const prData: PullsUpdateParams = {
       owner,
       repo,
       pull_number: prNumber,
-      body: getPRDescription(prBody, buildPRDescription(details)),
+      body: getPRDescription(recentBody, buildPRDescription(details)),
     };
 
     return await this.client.pulls.update(prData);
+  }
+
+  // PR description may have been updated by some other action in the same job, need to re-fetch it to get the latest
+  async getLatestPRDescription({ owner, repo, number }: { owner: string; repo: string; number: number }): Promise<string> {
+    return this.octokit.pulls
+      .get({
+        owner,
+        repo,
+        pull_number: number,
+      })
+      .then(({ data }: { data: PullRequestParams }) => {
+        return data.body || '';
+      });
   }
 
   private getGithubData(): IGithubData {
