@@ -67,15 +67,14 @@ export class GithubConnector {
     const owner = this.githubData.owner;
     const repo = this.githubData.repository.name;
     console.log('Updating PR details');
-    const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
+    const { number: prNumber = 0 } = this.githubData.pullRequest;
     const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
-    console.log(prBody, recentBody);
 
     const prData: PullsUpdateParams = {
       owner,
       repo,
       pull_number: prNumber,
-      body: getPRDescription(prBody, buildPRDescription(details)),
+      body: getPRDescription(recentBody, buildPRDescription(details)),
     };
 
     return await this.client.pulls.update(prData);
@@ -90,7 +89,6 @@ export class GithubConnector {
         pull_number: number,
       })
       .then(({ data }: { data: PullRequestParams }) => {
-        console.log(JSON.stringify(data));
         return data.body || '';
       });
   }
