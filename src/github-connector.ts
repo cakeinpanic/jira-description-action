@@ -1,8 +1,10 @@
 import { context, GitHub } from '@actions/github/lib/github';
-import { PullsUpdateParams } from '@octokit/rest';
+import Octokit, { PullsUpdateParams } from '@octokit/rest';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
+
+const octokit = new Octokit();
 
 export class GithubConnector {
   client: GitHub = {} as GitHub;
@@ -65,7 +67,8 @@ export class GithubConnector {
     const repo = this.githubData.repository.name;
     console.log('Updating PR details');
     const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
-    console.log(prBody);
+    const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
+    console.log(prBody, recentBody);
 
     const prData: PullsUpdateParams = {
       owner,
@@ -75,6 +78,20 @@ export class GithubConnector {
     };
 
     return await this.client.pulls.update(prData);
+  }
+
+  // PR description may have been updated by some other action in the same job, need to re-fetch it to get the latest
+  async getLatestPRDescription({ owner, repo, number }: { owner: string; repo: string; number: number }): Promise<string> {
+    return octokit.pulls
+      .get({
+        owner,
+        repo,
+        pull_number: number,
+      })
+      .then(({ data }: { data: PullRequestParams }) => {
+        console.log(JSON.stringify(data));
+        return data.body || '';
+      });
   }
 
   private getGithubData(): IGithubData {
