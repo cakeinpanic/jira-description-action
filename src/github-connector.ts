@@ -4,15 +4,16 @@ import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
 
-const octokit = new Octokit();
-
 export class GithubConnector {
   client: GitHub = {} as GitHub;
   githubData: IGithubData = {} as IGithubData;
+  octokit: Octokit;
 
   constructor() {
     const { GITHUB_TOKEN } = getInputs();
     this.client = new GitHub(GITHUB_TOKEN);
+    this.octokit = new Octokit({ auth: GITHUB_TOKEN });
+
     this.githubData = this.getGithubData();
   }
 
@@ -82,7 +83,7 @@ export class GithubConnector {
 
   // PR description may have been updated by some other action in the same job, need to re-fetch it to get the latest
   async getLatestPRDescription({ owner, repo, number }: { owner: string; repo: string; number: number }): Promise<string> {
-    return octokit.pulls
+    return this.octokit.pulls
       .get({
         owner,
         repo,
