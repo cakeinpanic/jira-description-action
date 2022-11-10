@@ -65,6 +65,7 @@ export class GithubConnector {
     const repo = this.githubData.repository.name;
     console.log('Updating PR details');
     const { number: prNumber = 0, body: prBody = '' } = this.githubData.pullRequest;
+    console.log(prBody);
 
     const prData: PullsUpdateParams = {
       owner,
