@@ -71,10 +71,19 @@ export const buildPRDescription = (details: JIRADetails) => {
   const displayKey = details.key.toUpperCase();
   return `
 <table>
-<td>
-  <a href="${details.url}" title="${displayKey}" target="_blank"><img alt="${details.type.name}" src="${details.type.icon}" />${displayKey}</a>  ${details.summary}
-  </td></table>
-  <br />
- 
+  <tr>
+    <th>Type</th>
+    <th>Issue</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>${details.type.name}</td>
+    <td>
+      <a href="${details.url}" title="${displayKey}" target="_blank"><img alt="${details.type.name}" src="${details.type.icon}" />${displayKey}</a>
+    </td>
+    <td>${details.summary}</td>
+  </tr>
+</table>
+<br />
 `;
 };
