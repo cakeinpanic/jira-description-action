@@ -1,5 +1,7 @@
 # jira-description-action
 
+Forked from https://github.com/cakeinpanic/jira-description-action
+
 > A lightweight solution to integrate GitHub with JIRA for project management. 🔎
 
 ![illustration](illustration.png)
