@@ -9,7 +9,7 @@ To make `jira-description-action` a part of your workflow, just add a `jira-desc
 
 > **Note**
 > This action fetches PR description and does not take it form context. So if you are chainign few actions which work with PR description, put this one as the last one
- 
+
 ```yml
 name: jira-description-action
 on:
@@ -19,19 +19,19 @@ jobs:
   add-jira-description:
     runs-on: ubuntu-latest
     steps:
-      - uses: cakeinpanic/jira-description-action@v0.3.2
+      - uses: BoscoDomingo/jira-description-action@v0.4
         name: jira-description-action
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-token: ${{ secrets.JIRA_TOKEN }}
           jira-base-url: https://your-domain.atlassian.net
-          skip-branches: '^(production-release|main|master|release\/v\d+)$' #optional 
+          skip-branches: '^(production-release|main|master|release\/v\d+)$' #optional
           custom-issue-number-regexp: '^\d+' #optional
-          jira-project-key: 'PRJ' #optional    
+          jira-project-key: 'PRJ' #optional
 ```
 `
 ## Features
-When a PR passes the above check, `jira-description-action` will also add the issue details to the top of the PR description. 
+When a PR passes the above check, `jira-description-action` will also add the issue details to the top of the PR description.
 
 ### Options
 
@@ -74,10 +74,10 @@ For example
 bugfix/prj-15-click -> PRJ-15
 prj-15-bugfix-17 -> PRJ-17
 15-bugfix -> nothing found
-``` 
+```
 Custom regexp would work like that(check for more [in tests](__tests__/utils.test.ts#106)):
 ```
-custom-issue-number-regexp: 'MYPROJ-\d+' 
+custom-issue-number-regexp: 'MYPROJ-\d+'
 ```
 ```
 bugfix/MYPROJ-15-click -> MYPROJ-15
@@ -85,11 +85,11 @@ prj-15-myproj-17 -> MYPROJ-15 // it is insensitive by design
 15-bugfix -> null
 ```
 
-If you don't use full keys in branch names, you can specify optional parameters to compute issue keys. 
+If you don't use full keys in branch names, you can specify optional parameters to compute issue keys.
 It would be appended to found key as `${jira-project-key}-{regexp-match}`:
 ```
 jira-project-key: 'MYPROJ'
-custom-issue-number-regexp: '\d+' 
+custom-issue-number-regexp: '\d+'
 ```
 ```
 bugfix/prj-15-click -> MYPROJ-15
@@ -99,7 +99,7 @@ prj-15-bugfix-17 -> MYPROJ-15
 Groups in regexp can also be used(last group in a match would be taken):
 ```
 jira-project-key: 'MYPROJ'
-custom-issue-number-regexp: '-(\d+)' 
+custom-issue-number-regexp: '-(\d+)'
 ```
 ```
 bugfix/prj15-239-click -> MYPROJ-239
