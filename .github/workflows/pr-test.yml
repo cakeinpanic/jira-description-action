@@ -4,13 +4,13 @@ on:
 
 jobs:
   build-test:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         name: setup node
         with:
-          node-version: '13.x'
+          node-version-file: '.nvmrc'
 
       - name: Cache node modules
         uses: actions/cache@v2
