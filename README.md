@@ -8,7 +8,7 @@
 To make `jira-description-action` a part of your workflow, just add a `jira-description-action.yml` file in your `.github/workflows/` directory in your GitHub repository.
 
 > **Note**
-> This action fetches PR description and does not take it form context. So if you are chainign few actions which work with PR description, put this one as the last one
+> This action fetches PR description and does not take it form context. So if you are chaining a few actions which work with PR description, put this one as the last one
  
 ```yml
 name: jira-description-action
@@ -19,7 +19,7 @@ jobs:
   add-jira-description:
     runs-on: ubuntu-latest
     steps:
-      - uses: cakeinpanic/jira-description-action@v0.3.2
+      - uses: cakeinpanic/jira-description-action@v0.3.3
         name: jira-description-action
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
