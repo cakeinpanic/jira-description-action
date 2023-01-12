@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cakeinpanic/jira-description-action"
+    "url": "git+https://github.com/Job4/jira-description-action"
   },
   "engines": {
     "node": ">= 16",
