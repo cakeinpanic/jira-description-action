@@ -1,5 +1,6 @@
 import { context, GitHub } from '@actions/github/lib/github';
 import Octokit, { PullsUpdateParams } from '@octokit/rest';
+import * as github from '@actions/github';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
@@ -68,7 +69,7 @@ export class GithubConnector {
     const repo = this.githubData.repository.name;
     console.log('Updating PR details');
     const { number: prNumber = 0 } = this.githubData.pullRequest;
-    const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
+    const recentBody = await this.getLatestPRDescription();
 
     const prData: PullsUpdateParams = {
       owner,
@@ -81,16 +82,8 @@ export class GithubConnector {
   }
 
   // PR description may have been updated by some other action in the same job, need to re-fetch it to get the latest
-  async getLatestPRDescription({ owner, repo, number }: { owner: string; repo: string; number: number }): Promise<string> {
-    return this.octokit.pulls
-      .get({
-        owner,
-        repo,
-        pull_number: number,
-      })
-      .then(({ data }: { data: PullRequestParams }) => {
-        return data.body || '';
-      });
+  async getLatestPRDescription(): Promise<string> {
+    return github.context.payload.pull_request?.body || '';
   }
 
   private getGithubData(): IGithubData {
