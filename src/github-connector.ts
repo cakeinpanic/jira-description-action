@@ -96,12 +96,21 @@ export class GithubConnector {
   private getGithubData(): IGithubData {
     const {
       eventName,
-      payload: {
-        repository,
-        organization: { login: owner },
-        pull_request: pullRequest,
-      },
+      payload: { repository, pull_request: pullRequest },
     } = context;
+
+    let owner: IGithubData['owner'] | undefined;
+
+    if (context?.payload?.organization) {
+      owner = context?.payload?.organization?.login;
+    } else {
+      console.log('Could not find organization, using repository owner instead.');
+      owner = context.payload.repository?.owner.login;
+    }
+
+    if (!owner) {
+      throw new Error('Could not find owner.');
+    }
 
     return {
       eventName,
