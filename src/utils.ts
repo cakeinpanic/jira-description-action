@@ -7,6 +7,7 @@ import {
   WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS,
 } from './constants';
 import { JIRADetails } from './types';
+import { AxiosError } from 'axios';
 
 const getJIRAIssueKey = (input: string, regexp: RegExp = JIRA_REGEX_MATCHER): string | null => {
   const matches = regexp.exec(input);
@@ -78,3 +79,5 @@ export const buildPRDescription = (details: JIRADetails) => {
  
 `;
 };
+
+export const isAxiosError = <T = any>(err: Error): err is AxiosError<T> => !!(err as AxiosError)?.isAxiosError;

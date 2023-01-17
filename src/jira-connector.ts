@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
+import { isAxiosError } from './utils';
 import { getInputs } from './action-inputs';
 import { JIRA, JIRADetails } from './types';
+import { error as coreError, info as coreInfo } from '@actions/core';
 
 export class JiraConnector {
   client: AxiosInstance;
@@ -46,6 +48,10 @@ export class JiraConnector {
         },
       };
     } catch (error) {
+      if (isAxiosError(error) && error?.response?.status === 401) {
+        coreError('Jira request failed, check your jira-token.');
+        coreInfo('Does your jira-token include the required prefix ? See https://github.com/cakeinpanic/jira-description-action#jira-token');
+      }
       throw error;
     }
   }
