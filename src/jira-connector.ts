@@ -46,8 +46,9 @@ export class JiraConnector {
         },
       };
     } catch (error) {
+      console.log('Error fetching details from JIRA.')
       if (error.response) {
-        throw new Error(JSON.stringify(error.response, null, 4));
+        throw new Error(JSON.stringify(error.response.data, null, 4));
       }
       throw error;
     }
