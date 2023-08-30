@@ -33,6 +33,8 @@ inputs:
 outputs:
   jira-issue-found:
     description: 'Indication whether a jira issue was found or not'
+  jira-issue-source:
+    description: 'Indication how the jira issue was found, by - branch | pr-title | null'
 runs:
   using: 'node16'
   main: 'lib/index.js'

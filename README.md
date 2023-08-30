@@ -50,7 +50,8 @@ When a PR passes the above check, `jira-description-action` will also add the is
 
 | key                    | description                                                                                                                                                                                                                                                                                                     
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `jira-issue-found`         | Indication whether a jira issue was found or not. |
+| `jira-issue-found`         | Indication whether a jira issue was found or not |
+| `jira-issue-source`         | Indication how the jira issue was found, by - `branch \| pr-title \| null` |
 
 Tokens are private, so it's suggested adding them as [GitHub secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
 
