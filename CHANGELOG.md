@@ -1,3 +1,6 @@
+## 0.5.1
+* Improve error logging if Jira request fails
+
 ## 0.5.0
 * Allow using action not only in organization https://github.com/cakeinpanic/jira-description-action/pull/36
 * Improve JIRA error output(get rid of circular dependency log) https://github.com/cakeinpanic/jira-description-action/pull/43 
