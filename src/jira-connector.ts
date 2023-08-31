@@ -1,6 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
 import { getInputs } from './action-inputs';
 import { JIRA, JIRADetails } from './types';
+import { AxiosError } from 'axios';
+import { error as coreError, info as coreInfo } from '@actions/core';
+
+export const isAxiosError = <T = any>(err: Error): err is AxiosError<T> => !!(err as AxiosError)?.isAxiosError;
 
 export class JiraConnector {
   client: AxiosInstance;
@@ -46,7 +50,14 @@ export class JiraConnector {
         },
       };
     } catch (error) {
-      console.log('Error fetching details from JIRA.')
+      console.log(error.response.status);
+      if (isAxiosError(error) && error?.response?.status === 401) {
+        coreError('Jira request failed, check your jira-token.');
+        coreInfo('Does your jira-token include the required prefix ? See https://github.com/cakeinpanic/jira-description-action#jira-token');
+      }
+      console.log(
+        'Error fetching details from JIRA. Please check if token you provide is built correctly & API key has all needed permissions. https://github.com/cakeinpanic/jira-description-action#jira-token'
+      );
       if (error.response) {
         throw new Error(JSON.stringify(error.response.data, null, 4));
       }
