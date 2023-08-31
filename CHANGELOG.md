@@ -1,3 +1,10 @@
+## 0.5.0
+* Allow using action not only in organization https://github.com/cakeinpanic/jira-description-action/pull/36
+* Improve JIRA error output(get rid of circular dependency log) https://github.com/cakeinpanic/jira-description-action/pull/43 
+
+## 0.4.0
+* Use node 16+ https://github.com/cakeinpanic/jira-description-action/pull/27
+
 ## 0.3.1
 * Don't fail if PR body is empty fixing https://github.com/cakeinpanic/jira-description-action/issues/17
 
