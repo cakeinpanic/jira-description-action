@@ -105,6 +105,6 @@ export interface IActionInputs {
 export interface IGithubData {
   eventName: string;
   repository: any;
-  owner: any;
+  owner: string;
   pullRequest: PullRequestParams;
 }
