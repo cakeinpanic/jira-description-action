@@ -1,3 +1,6 @@
+## 0.6.0
+* Add `jira-issue-found` and `jira-issue-source` outputs https://github.com/cakeinpanic/jira-description-action/pull/45
+
 ## 0.5.1
 * Improve error logging if Jira request fails
 
