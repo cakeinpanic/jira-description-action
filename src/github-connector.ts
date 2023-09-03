@@ -37,11 +37,11 @@ export class GithubConnector {
     switch (WHAT_TO_USE) {
       case ESource.branch:
         keyFound = this.getIssueKeyFromString(branchName);
-        source = ESource.branch;
+        source = keyFound ? ESource.branch : null;
         break;
       case ESource.prTitle:
         keyFound = this.getIssueKeyFromString(prTitle);
-        source = ESource.prTitle;
+        source = keyFound ? ESource.prTitle : null;
         break;
       case ESource.both:
         const keyByPRTitle = this.getIssueKeyFromString(prTitle);
