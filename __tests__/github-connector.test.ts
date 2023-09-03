@@ -56,7 +56,9 @@ describe('Github connector()', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, WHAT_TO_USE: ESource.branch }));
         connector = new GithubConnector();
 
-        expect(connector.getIssueKeyFromTitle()).toEqual(getJIRAIssueKeyReturnValue);
+        const jiraIssue = connector.getIssueKeyFromTitle();
+        expect(jiraIssue.key).toEqual(getJIRAIssueKeyReturnValue);
+        expect(jiraIssue.source).toEqual(ESource.branch);
         expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(BRANCH_NAME);
       });
 
@@ -64,7 +66,9 @@ describe('Github connector()', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, WHAT_TO_USE: ESource.prTitle }));
         connector = new GithubConnector();
 
-        expect(connector.getIssueKeyFromTitle()).toEqual(getJIRAIssueKeyReturnValue);
+        const jiraIssue = connector.getIssueKeyFromTitle();
+        expect(jiraIssue.key).toEqual(getJIRAIssueKeyReturnValue);
+        expect(jiraIssue.source).toEqual(ESource.prTitle);
         expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(PR_TITLE);
       });
 
@@ -74,7 +78,9 @@ describe('Github connector()', () => {
           (getJIRAIssueKeyByDefaultRegexp as any).mockImplementation((str: string) => (str === PR_TITLE ? PR_TITLE : null));
           connector = new GithubConnector();
 
-          expect(connector.getIssueKeyFromTitle()).toEqual(PR_TITLE);
+          const jiraIssue = connector.getIssueKeyFromTitle();
+          expect(jiraIssue.key).toEqual(PR_TITLE);
+          expect(jiraIssue.source).toEqual(ESource.prTitle);
           expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(PR_TITLE);
           expect(getJIRAIssueKeyByDefaultRegexp).not.toHaveBeenCalledWith(BRANCH_NAME);
         });
@@ -84,7 +90,9 @@ describe('Github connector()', () => {
           (getJIRAIssueKeyByDefaultRegexp as any).mockImplementation((str: string) => (str === PR_TITLE ? null : BRANCH_NAME));
           connector = new GithubConnector();
 
-          expect(connector.getIssueKeyFromTitle()).toEqual(BRANCH_NAME);
+          const jiraIssue = connector.getIssueKeyFromTitle();
+          expect(jiraIssue.key).toEqual(BRANCH_NAME);
+          expect(jiraIssue.source).toEqual(ESource.branch);
           expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(PR_TITLE);
           expect(getJIRAIssueKeyByDefaultRegexp).toHaveBeenCalledWith(BRANCH_NAME);
         });
@@ -110,7 +118,9 @@ describe('Github connector()', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, WHAT_TO_USE: ESource.branch }));
         connector = new GithubConnector();
 
-        expect(connector.getIssueKeyFromTitle()).toEqual(getJIRAIssueKeysByCustomRegexpReturnValue);
+        const jiraIssue = connector.getIssueKeyFromTitle();
+        expect(jiraIssue.key).toEqual(getJIRAIssueKeysByCustomRegexpReturnValue);
+        expect(jiraIssue.source).toEqual(ESource.branch);
         expect(getJIRAIssueKeysByCustomRegexp).toHaveBeenCalledWith(
           BRANCH_NAME,
           INPUTS_MOCK.CUSTOM_ISSUE_NUMBER_REGEXP,
@@ -122,7 +132,9 @@ describe('Github connector()', () => {
         (getInputs as any).mockImplementation(() => ({ ...INPUTS_MOCK, WHAT_TO_USE: ESource.prTitle }));
         connector = new GithubConnector();
 
-        expect(connector.getIssueKeyFromTitle()).toEqual(getJIRAIssueKeysByCustomRegexpReturnValue);
+        const jiraIssue = connector.getIssueKeyFromTitle();
+        expect(jiraIssue.key).toEqual(getJIRAIssueKeysByCustomRegexpReturnValue);
+        expect(jiraIssue.source).toEqual(ESource.prTitle);
         expect(getJIRAIssueKeysByCustomRegexp).toHaveBeenCalledWith(PR_TITLE, INPUTS_MOCK.CUSTOM_ISSUE_NUMBER_REGEXP, INPUTS_MOCK.JIRA_PROJECT_KEY);
       });
 
@@ -132,7 +144,9 @@ describe('Github connector()', () => {
           (getJIRAIssueKeysByCustomRegexp as any).mockImplementation((str: string) => (str === PR_TITLE ? PR_TITLE : null));
           connector = new GithubConnector();
 
-          expect(connector.getIssueKeyFromTitle()).toEqual(PR_TITLE);
+          const jiraIssue = connector.getIssueKeyFromTitle();
+          expect(jiraIssue.key).toEqual(PR_TITLE);
+          expect(jiraIssue.source).toEqual(ESource.prTitle);
           expect(getJIRAIssueKeysByCustomRegexp).toHaveBeenCalledWith(PR_TITLE, INPUTS_MOCK.CUSTOM_ISSUE_NUMBER_REGEXP, INPUTS_MOCK.JIRA_PROJECT_KEY);
           expect(getJIRAIssueKeysByCustomRegexp).not.toHaveBeenCalledWith(
             BRANCH_NAME,
@@ -146,7 +160,9 @@ describe('Github connector()', () => {
           (getJIRAIssueKeysByCustomRegexp as any).mockImplementation((str: string) => (str === PR_TITLE ? null : BRANCH_NAME));
           connector = new GithubConnector();
 
-          expect(connector.getIssueKeyFromTitle()).toEqual(BRANCH_NAME);
+          const jiraIssue = connector.getIssueKeyFromTitle();
+          expect(jiraIssue.key).toEqual(BRANCH_NAME);
+          expect(jiraIssue.source).toEqual(ESource.branch);
           expect(getJIRAIssueKeysByCustomRegexp).toHaveBeenCalledWith(PR_TITLE, INPUTS_MOCK.CUSTOM_ISSUE_NUMBER_REGEXP, INPUTS_MOCK.JIRA_PROJECT_KEY);
           expect(getJIRAIssueKeysByCustomRegexp).toHaveBeenCalledWith(
             BRANCH_NAME,

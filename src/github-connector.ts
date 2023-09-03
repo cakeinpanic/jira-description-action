@@ -25,31 +25,41 @@ export class GithubConnector {
     return this.githubData.pullRequest.head.ref;
   }
 
-  getIssueKeyFromTitle(): string {
+  getIssueKeyFromTitle(): { key: string; source: ESource } {
     const { WHAT_TO_USE } = getInputs();
 
     const prTitle = this.githubData.pullRequest.title || '';
     const branchName = this.headBranch;
 
     let keyFound: string | null = null;
+    let source: ESource | null = null;
 
     switch (WHAT_TO_USE) {
       case ESource.branch:
         keyFound = this.getIssueKeyFromString(branchName);
+        source = keyFound ? ESource.branch : null;
         break;
       case ESource.prTitle:
         keyFound = this.getIssueKeyFromString(prTitle);
+        source = keyFound ? ESource.prTitle : null;
         break;
       case ESource.both:
-        keyFound = this.getIssueKeyFromString(prTitle) || this.getIssueKeyFromString(branchName);
+        const keyByPRTitle = this.getIssueKeyFromString(prTitle);
+        if (keyByPRTitle) {
+          keyFound = keyByPRTitle;
+          source = ESource.prTitle;
+        } else {
+          keyFound = this.getIssueKeyFromString(branchName);
+          source = keyFound ? ESource.branch : null;
+        }
         break;
     }
 
-    if (!keyFound) {
+    if (!keyFound || !source) {
       throw new Error('JIRA key not found');
     }
-    console.log(`JIRA key found -> ${keyFound}`);
-    return keyFound;
+    console.log(`JIRA key found -> ${keyFound} from ${source}`);
+    return { key: keyFound, source };
   }
 
   private getIssueKeyFromString(stringToParse: string): string | null {
