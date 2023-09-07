@@ -1,3 +1,6 @@
+## 0.6.1
+* Fix adding outputs if action failed
+
 ## 0.6.0
 * Add `jira-issue-found` and `jira-issue-source` outputs https://github.com/cakeinpanic/jira-description-action/pull/45
 
