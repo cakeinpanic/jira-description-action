@@ -6,8 +6,6 @@ import { JiraConnector } from './jira-connector';
 
 async function run(): Promise<void> {
   const { FAIL_WHEN_JIRA_ISSUE_NOT_FOUND } = getInputs();
-  let jiraIssueFound = false;
-  let jiraIssueSource = null;
 
   try {
     const { BRANCH_IGNORE_PATTERN } = getInputs();
@@ -29,11 +27,14 @@ async function run(): Promise<void> {
     const details = await jiraConnector.getTicketDetails(key);
     await githubConnector.updatePrDetails(details);
 
-    jiraIssueFound = true;
-    jiraIssueSource = source;
+    core.setOutput('jira-issue-found', true);
+    core.setOutput('jira-issue-source', source);
   } catch (error) {
     console.log('Failed to add JIRA description to PR.');
     core.error(error.message);
+
+    core.setOutput('jira-issue-found', false);
+    core.setOutput('jira-issue-source', 'null');
 
     if (FAIL_WHEN_JIRA_ISSUE_NOT_FOUND) {
       core.setFailed(error.message);
@@ -41,9 +42,6 @@ async function run(): Promise<void> {
     } else {
       process.exit(0);
     }
-  } finally {
-    core.setOutput('jira-issue-found', jiraIssueFound.toString());
-    core.setOutput('jira-issue-source', jiraIssueSource);
   }
 }
 
