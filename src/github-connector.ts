@@ -1,18 +1,18 @@
-import { context, GitHub } from '@actions/github/lib/github';
-import Octokit, { PullsUpdateParams } from '@octokit/rest';
+import { context, getOctokit } from '@actions/github';
+import { GitHub } from '@actions/github/lib/utils';
+import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types';
 import { getInputs } from './action-inputs';
 import { ESource, IGithubData, JIRADetails, PullRequestParams } from './types';
 import { buildPRDescription, getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription } from './utils';
 
 export class GithubConnector {
-  client: GitHub = {} as GitHub;
   githubData: IGithubData = {} as IGithubData;
-  octokit: Octokit;
+  octokit: InstanceType<typeof GitHub>;
 
   constructor() {
     const { GITHUB_TOKEN } = getInputs();
-    this.client = new GitHub(GITHUB_TOKEN);
-    this.octokit = new Octokit({ auth: GITHUB_TOKEN });
+
+    this.octokit = getOctokit(GITHUB_TOKEN);
 
     this.githubData = this.getGithubData();
   }
@@ -80,25 +80,25 @@ export class GithubConnector {
     const { number: prNumber = 0 } = this.githubData.pullRequest;
     const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
 
-    const prData: PullsUpdateParams = {
+    const prData: RestEndpointMethodTypes['pulls']['update']['parameters'] = {
       owner,
       repo,
       pull_number: prNumber,
       body: getPRDescription(recentBody, buildPRDescription(details)),
     };
 
-    return await this.client.pulls.update(prData);
+    return await this.octokit.rest.pulls.update(prData);
   }
 
   // PR description may have been updated by some other action in the same job, need to re-fetch it to get the latest
   async getLatestPRDescription({ owner, repo, number }: { owner: string; repo: string; number: number }): Promise<string> {
-    return this.octokit.pulls
+    return this.octokit.rest.pulls
       .get({
         owner,
         repo,
         pull_number: number,
       })
-      .then(({ data }: { data: PullRequestParams }) => {
+      .then(({ data }: RestEndpointMethodTypes['pulls']['get']['response']) => {
         return data.body || '';
       });
   }

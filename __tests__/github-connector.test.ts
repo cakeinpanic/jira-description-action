@@ -1,5 +1,5 @@
+import { getOctokit } from '@actions/github';
 import { GithubConnector } from '../src/github-connector';
-import { GitHub } from '@actions/github/lib/github';
 import { ESource, IActionInputs } from '../src/types';
 import { describe } from 'jest-circus';
 import { getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp } from '../src/utils';
@@ -12,7 +12,7 @@ const MOCK_INPUT: Partial<IActionInputs> = {
 const BRANCH_NAME = 'branchName';
 const PR_TITLE = 'prTitle';
 
-jest.mock('@actions/github/lib/github', () => {
+jest.mock('@actions/github', () => {
   const MOCK_CONTEXT = {
     eventName: 'eventName',
     payload: {
@@ -22,7 +22,7 @@ jest.mock('@actions/github/lib/github', () => {
     },
   };
   return {
-    GitHub: jest.fn(),
+    getOctokit: jest.fn(),
     context: MOCK_CONTEXT,
   };
 });
@@ -36,7 +36,7 @@ describe('Github connector()', () => {
   it('initializes correctly', () => {
     (getInputs as any).mockImplementation(() => MOCK_INPUT);
     connector = new GithubConnector();
-    expect(GitHub).toHaveBeenCalledWith(MOCK_INPUT.GITHUB_TOKEN);
+    expect(getOctokit).toHaveBeenCalledWith(MOCK_INPUT.GITHUB_TOKEN);
   });
 
   describe('getIssueKeyFromTitle()', () => {
