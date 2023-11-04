@@ -7,7 +7,8 @@
     "build": "engines-ok && ncc build src/main.ts -o lib -m",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prettier": "prettier --write '**/*.ts'"
+    "prettier": "prettier --write '**/*.ts'",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -53,10 +54,12 @@
     "jest": "^25.5.4",
     "jest-circus": "^25.5.4",
     "lint-staged": "^10.5.1",
+    "release-it": "^16.2.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^7.0.2",
     "husky": "^4.3.0",
     "prettier": "^2.1.2"
   }
