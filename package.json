@@ -15,8 +15,8 @@
     "url": "git+https://github.com/cakeinpanic/jira-description-action"
   },
   "engines": {
-    "node": ">= 16",
-    "npm": ">= 8"
+    "node": ">= 20",
+    "npm": ">= 10"
   },
   "keywords": [
     "actions",
