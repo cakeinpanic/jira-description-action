@@ -64,8 +64,8 @@ describe('getPRDescription()', () => {
     const issueInfo = 'new info about jira task';
     const description = getPRDescription(oldPRBody, issueInfo);
 
-    expect(description).toEqual(`${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
-${HIDDEN_MARKER_START}
+    expect(description).toEqual(`${HIDDEN_MARKER_START}
+${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${issueInfo}
 ${HIDDEN_MARKER_END}
 ${oldPRBody}`);
@@ -78,8 +78,8 @@ ${oldPRBody}`);
 
     const description = getPRDescription(oldPRBody, issueInfo);
 
-    expect(description).toEqual(`${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
-${HIDDEN_MARKER_START}
+    expect(description).toEqual(`${HIDDEN_MARKER_START}
+${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${issueInfo}
 ${HIDDEN_MARKER_END}
 ${oldPRBodyInformation}`);
