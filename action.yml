@@ -31,6 +31,8 @@ inputs:
       required: false
       default: 'false'
 outputs:
+  jira-issue-key:
+    description: 'The JIRA issue key. If key is not found the value is an empty string'
   jira-issue-found:
     description: 'Indication whether a jira issue was found or not'
   jira-issue-source:

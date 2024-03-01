@@ -50,6 +50,7 @@ When a PR passes the above check, `jira-description-action` will also add the is
 
 | key                    | description                                                                                                                                                                                                                                                                                                     
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `jira-issue-key`         | The JIRA issue key. If key is not found the value is an empty string |****
 | `jira-issue-found`         | Indication whether a jira issue was found or not |
 | `jira-issue-source`         | Indication how the jira issue was found, by - `branch \| pr-title \| null` |
 
