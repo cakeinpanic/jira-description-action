@@ -1,5 +1,6 @@
 import { HIDDEN_MARKER_END, HIDDEN_MARKER_START, WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS } from '../src/constants';
-import { getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription, shouldSkipBranch } from '../src/utils';
+import { JIRADetails } from '../src/types';
+import { getJIRAIssueKeyByDefaultRegexp, getJIRAIssueKeysByCustomRegexp, getPRDescription, shouldSkipBranch, buildPRDescription } from '../src/utils';
 
 jest.spyOn(console, 'log').mockImplementation(); // avoid actual console.log in test output
 
@@ -110,5 +111,40 @@ ${HIDDEN_MARKER_END}
 this is text below the markers`;
     const description = getPRDescription(oldPRDescription, issueInfo);
     expect(description).toEqual(oldPRDescription);
+  });
+});
+
+describe('buildPRDescription()', () => {
+  it('should return description HTML from the JIRA details', () => {
+    const details: JIRADetails = {
+      key: 'ABC-123',
+      summary: 'Sample summary',
+      url: 'example.com/ABC-123',
+      type: {
+        name: 'story',
+        icon: 'icon.png',
+      },
+      project: {
+        name: 'name',
+        url: 'url',
+        key: 'key',
+      },
+    };
+
+    expect(buildPRDescription(details)).toEqual(`
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <a href="example.com/ABC-123" title="ABC-123" target="_blank">
+              <img alt="story" src="icon.png" />
+              ABC-123
+            </a>
+            Sample summary
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />`);
   });
 });

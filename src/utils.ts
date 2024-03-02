@@ -74,11 +74,18 @@ ${HIDDEN_MARKER_END}
 export const buildPRDescription = (details: JIRADetails) => {
   const displayKey = details.key.toUpperCase();
   return `
-<table>
-<td>
-  <a href="${details.url}" title="${displayKey}" target="_blank"><img alt="${details.type.name}" src="${details.type.icon}" />${displayKey}</a>  ${details.summary}
-  </td></table>
-  <br />
- 
-`;
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <a href="${details.url}" title="${displayKey}" target="_blank">
+              <img alt="${details.type.name}" src="${details.type.icon}" />
+              ${displayKey}
+            </a>
+            ${details.summary}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />`;
 };
