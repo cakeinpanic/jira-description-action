@@ -50,12 +50,12 @@
     "jest": "^25.5.4",
     "jest-circus": "^25.5.4",
     "lint-staged": "^10.5.1",
-    "release-it": "^16.2.1",
+    "release-it": "^17.1.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^7.0.2",
+    "@release-it/conventional-changelog": "^8.0.1",
     "husky": "^4.3.0",
     "prettier": "^2.1.2"
   }
