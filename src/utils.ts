@@ -63,8 +63,7 @@ export const getPRDescription = (oldBody: string, details: string): string => {
   return `${HIDDEN_MARKER_START}
 ${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${details}
-${HIDDEN_MARKER_END}
-${bodyWithoutJiraDetails}`;
+${HIDDEN_MARKER_END}${bodyWithoutJiraDetails}`;
 };
 
 export const buildPRDescription = (details: JIRADetails) => {

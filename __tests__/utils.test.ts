@@ -67,8 +67,7 @@ describe('getPRDescription()', () => {
     expect(description).toEqual(`${HIDDEN_MARKER_START}
 ${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${issueInfo}
-${HIDDEN_MARKER_END}
-${oldPRBody}`);
+${HIDDEN_MARKER_END}${oldPRBody}`);
   });
 
   it('should replace issue info', () => {
@@ -81,7 +80,17 @@ ${oldPRBody}`);
     expect(description).toEqual(`${HIDDEN_MARKER_START}
 ${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${issueInfo}
-${HIDDEN_MARKER_END}
-${oldPRBodyInformation}`);
+${HIDDEN_MARKER_END}${oldPRBodyInformation}`);
   });
+
+  it('should preserve identity', () => {
+    const oldPRBodyInformation = 'old PR description body';
+    const oldPRBody = `${HIDDEN_MARKER_START}Here is some old issue information${HIDDEN_MARKER_END}${oldPRBodyInformation}`;
+    const issueInfo = 'new info about jira task';
+
+    const description = getPRDescription(oldPRBody, issueInfo);
+    const identity = getPRDescription(description, issueInfo);
+
+    expect(description).toEqual(identity);
+  })
 });
