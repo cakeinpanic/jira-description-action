@@ -80,6 +80,7 @@ export class GithubConnector {
     const { number: prNumber = 0 } = this.githubData.pullRequest;
     const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
 
+    console.log('recentBody', recentBody)
     const prData: RestEndpointMethodTypes['pulls']['update']['parameters'] = {
       owner,
       repo,
