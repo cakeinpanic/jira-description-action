@@ -80,12 +80,17 @@ export class GithubConnector {
     const { number: prNumber = 0 } = this.githubData.pullRequest;
     const recentBody = await this.getLatestPRDescription({ repo, owner, number: this.githubData.pullRequest.number });
 
-    console.log('recentBody', recentBody)
+    const nextBody = getPRDescription(recentBody, buildPRDescription(details))
+    if (nextBody === recentBody) {
+      console.info('edit would not change ticket body')
+      return undefined
+    }
+    console.log('diff', { nextBody, recentBody })
     const prData: RestEndpointMethodTypes['pulls']['update']['parameters'] = {
       owner,
       repo,
       pull_number: prNumber,
-      body: getPRDescription(recentBody, buildPRDescription(details)),
+      body: nextBody,
     };
 
     return await this.octokit.rest.pulls.update(prData);
