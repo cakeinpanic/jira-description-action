@@ -4,7 +4,7 @@
   "description": "Add JIRA issue details to your GitHub pull request",
   "main": "lib/index.js",
   "scripts": {
-    "build": "engines-ok && ncc build src/main.ts -o lib -m",
+    "build": "engines-ok && ncc build src/main.ts -o lib",
     "test": "jest",
     "test:watch": "jest --watch",
     "prettier": "prettier --write '**/*.ts'",
