@@ -84,4 +84,19 @@ ${issueInfo}
 ${HIDDEN_MARKER_END}
 ${oldPRBodyInformation}`);
   });
+
+  it('does not duplicate WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS in the body when run multiple times', () => {
+    const oldPRBodyInformation = 'old PR description body';
+    const oldPRBody = `${HIDDEN_MARKER_START}Here is some old issue information${HIDDEN_MARKER_END}${oldPRBodyInformation}`;
+    const issueInfo = 'new info about jira task';
+
+    const firstDescription = getPRDescription(oldPRBody, issueInfo);
+    const secondDescription = getPRDescription(firstDescription, issueInfo);
+
+    expect(secondDescription).toEqual(`${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
+${HIDDEN_MARKER_START}
+${issueInfo}
+${HIDDEN_MARKER_END}
+${oldPRBodyInformation}`);
+  })
 });
