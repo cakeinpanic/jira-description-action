@@ -60,13 +60,15 @@ export const getPRDescription = (oldBody: string, details: string): string => {
 
   const replaceDetailsRg = new RegExp(`${hiddenMarkerStartRg}([\\s\\S]+)${hiddenMarkerEndRg}[\\s]?`, 'igm');
   const replaceWarningMessageRg = new RegExp(`${warningMsgRg}[\\s]?`, 'igm');
-  const bodyWithoutJiraDetails = (oldBody ?? '').replace(replaceDetailsRg, '').replace(replaceWarningMessageRg, '');
-
-  return `${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
+  const jiraDetailsMessage = `${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
 ${HIDDEN_MARKER_START}
 ${details}
 ${HIDDEN_MARKER_END}
-${bodyWithoutJiraDetails}`;
+`;
+  if (replaceDetailsRg.test(oldBody)) {
+    return (oldBody ?? '').replace(replaceWarningMessageRg, '').replace(replaceDetailsRg, jiraDetailsMessage);
+  }
+  return jiraDetailsMessage + oldBody;
 };
 
 export const buildPRDescription = (details: JIRADetails) => {

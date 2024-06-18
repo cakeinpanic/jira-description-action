@@ -98,5 +98,17 @@ ${HIDDEN_MARKER_START}
 ${issueInfo}
 ${HIDDEN_MARKER_END}
 ${oldPRBodyInformation}`);
-  })
+  });
+
+  it('respects the location of HIDDEN_MARKER_START and HIDDEN_MARKER_END when they already exist in the pull request body', () => {
+    const issueInfo = 'new info about jira task';
+    const oldPRDescription = `this is text above the markers
+${WARNING_MESSAGE_ABOUT_HIDDEN_MARKERS}
+${HIDDEN_MARKER_START}
+${issueInfo}
+${HIDDEN_MARKER_END}
+this is text below the markers`;
+    const description = getPRDescription(oldPRDescription, issueInfo);
+    expect(description).toEqual(oldPRDescription);
+  });
 });
