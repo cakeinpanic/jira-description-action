@@ -55,10 +55,10 @@
     "lint-staged": "^10.5.1",
     "release-it": "^16.2.1",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "@release-it/conventional-changelog": "^7.0.2"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^7.0.2",
     "husky": "^4.3.0",
     "prettier": "^2.1.2"
   }
