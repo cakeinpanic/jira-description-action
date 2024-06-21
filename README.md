@@ -31,7 +31,12 @@ jobs:
 ```
 `
 ## Features
-When a PR passes the above check, `jira-description-action` will also add the issue details to the top of the PR description. 
+When a PR passes the above check, `jira-description-action` will also add the issue details to the top of the PR description. The issue details can be placed in a specific section of the PR description by including the following markers in the [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository#adding-a-pull-request-template) for the repository.
+```
+<!--jira-description-action-hidden-marker-start-->
+
+<!--jira-description-action-hidden-marker-end-->
+```
 
 ### Options
 
