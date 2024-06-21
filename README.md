@@ -121,7 +121,7 @@ bugfix/prj15-239-click -> MYPROJ-239
 ### Custom label placement
 By default label would be prepended to the PR body. If you want it to be placed elsewhere in the description, you can add markers in the [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository#adding-a-pull-request-template) for the repository.
 
-Lable would be inserted between these marker lines:
+Label would be inserted between these marker lines:
 ```
 <!--jira-description-action-hidden-marker-start-->
 
