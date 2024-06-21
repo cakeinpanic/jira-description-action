@@ -30,15 +30,8 @@ jobs:
           jira-project-key: 'PRJ' #optional    
 ```
 `
-## Features
-When a PR passes the above check, `jira-description-action` will also add the issue details to the top of the PR description. The issue details can be placed in a specific section of the PR description by including the following markers in the [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository#adding-a-pull-request-template) for the repository.
-```
-<!--jira-description-action-hidden-marker-start-->
 
-<!--jira-description-action-hidden-marker-end-->
-```
-
-### Options
+## Options
 
 | key                    | description                                                                                                                                                                                                                                                                                                        | required | default |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------- |
@@ -51,7 +44,7 @@ When a PR passes the above check, `jira-description-action` will also add the is
 | `custom-issue-number-regexp` | Custom regexp to extract issue number from branch name. If not specified, default regexp would be used.  | false    | none     |
 | `fail-when-jira-issue-not-found` | Should action fail if jira issue is not found in jira  | false    | false     |
 
-### Outputs
+## Outputs
 
 | key                    | description                                                                                                                                                                                                                                                                                                     
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -59,6 +52,13 @@ When a PR passes the above check, `jira-description-action` will also add the is
 | `jira-issue-source`         | Indication how the jira issue was found, by - `branch \| pr-title \| null` |
 
 Tokens are private, so it's suggested adding them as [GitHub secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
+
+## Features
+* [Jira token](#jira-token)
+* [Skipping branches](#skipping-branches)
+* [Searching in branch name/PR title](#searching-in-branch-namepr-title)
+* [Using custom regex](#using-custom-regex)
+* [Custom label placement](#custom-label-placement)
 
 ### `jira-token`
 
@@ -116,4 +116,14 @@ custom-issue-number-regexp: '-(\d+)'
 ```
 bugfix/prj15-239-click -> MYPROJ-239
 15-bugfix -> null
+```
+
+### Custom label placement
+By default label would be prepended to the PR body. If you want it to be placed elsewhere in the description, you can add markers in the [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository#adding-a-pull-request-template) for the repository.
+
+Lable would be inserted between these marker lines:
+```
+<!--jira-description-action-hidden-marker-start-->
+
+<!--jira-description-action-hidden-marker-end-->
 ```
