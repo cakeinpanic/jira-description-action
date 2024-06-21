@@ -131,20 +131,9 @@ describe('buildPRDescription()', () => {
       },
     };
 
-    expect(buildPRDescription(details)).toEqual(`
-    <table>
-      <tbody>
-        <tr>
-          <td>
-            <a href="example.com/ABC-123" title="ABC-123" target="_blank">
-              <img alt="story" src="icon.png" />
-              ABC-123
-            </a>
-            Sample summary
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br />`);
+    expect(buildPRDescription(details)).toEqual(`<table><tbody><tr><td>
+  <a href="example.com/ABC-123" title="ABC-123" target="_blank"><img alt="story" src="icon.png" /> ABC-123</a>
+  Sample summary
+</td></tr></tbody></table><br />`);
   });
 });
