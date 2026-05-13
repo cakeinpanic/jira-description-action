@@ -38,7 +38,7 @@ outputs:
   jira-issue-source:
     description: 'Indication how the jira issue was found, by - branch | pr-title | null'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'lib/index.js'
 branding:
   icon: 'terminal'
