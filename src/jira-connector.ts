@@ -57,6 +57,12 @@ export class JiraConnector {
   }
 
   async getIssue(id: string): Promise<JIRA.Issue> {
+    // Validate the JIRA issue key to prevent path traversal attacks
+    // JIRA keys should only contain alphanumeric characters and hyphens
+    if (!/^[a-zA-Z0-9]+-\d+$/.test(id)) {
+      throw new Error(`Invalid JIRA issue key format: ${id}`);
+    }
+    
     const url = `/issue/${id}?fields=project,summary,issuetype`;
     const response = await this.client.get<JIRA.Issue>(url);
     return response.data;
